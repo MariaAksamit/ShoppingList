@@ -28,14 +28,3 @@
   .memberNames:hover{
     text-decoration: underline;
   }
-
-  .listCard {
-    height: 445px; 
-    overflow: hidden;
-  }
-
-  .overview {
-    margin: 10px;
-    max-width: 100%;
-    overflow: auto;
-  }

@@ -1,109 +1,86 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState } from 'react';
 
 const UserContext = createContext();
 
 export function Provider({ children })  {
-  const alreadyLogged = JSON.parse(sessionStorage.getItem('authUser'));
-
-  const roles = [
-    {
-      id: 0,
-      name: "LoggedIn"
-    },
-    {
-      id: 1,
-      name: "Owner"
-    },
-    {
-      id: 2,
-      name: "Member"
-    }
-  ];
   
   const users = [
     {
+      "id": 0,
+      "name": "Logout",
+    },
+    {
       "id": 1,
       "name": "Cassandra Clare",
-      "role": roles[1]
     },
     {
       "id": 2,
       "name": "Jace Wayland",
-      "role": roles[2]
     },
     {
       "id": 3,
       "name": "Jocelyn Morgernstern",
-      "role": roles[2]
     },
     {
       "id": 4,
       "name": "Alec Lightwood",
-      "role": roles[2]
     },
     {
       "id": 5,
-      "name": "Clare Fairchild",
-      "role": roles[0]
+      "name": "Clary Fairchild",
     },
     {
       "id": 6,
       "name": "Hodge Starkweather",
-      "role": roles[0]
-    }
-];
+    },
+    {
+      "id": 7,
+      "name": "Simon Lewis",
+    },
+    {
+      "id": 8,
+      "name": "Magnus Bane",
+    },
+    {
+      "id": 9,
+      "name": "Isabelle Lightwood",
+    },
+    {
+      "id": 10,
+      "name": "Aline Penhallow",
+    },
+    {
+      "id": 11,
+      "name": "Julian Blackthorn",
+    },
+  ];
 
-const [user, setUser] = useState(alreadyLogged ?? {
-  role: roles[0]
-});
-
-const changeUser = (id) => {
-  const user = users.find(user => user.id === id);
-  const result = user ?? {
-      role: roles[0]
+  const alreadyLogged = JSON.parse(sessionStorage.getItem('authUser'));
+  const [isLoggedIn, setIsLoggedIn] = useState(!!alreadyLogged);
+  const [user, setUser] = useState(alreadyLogged ?? users.find(user => user.id === 0));
+  
+  const changeUser = (userId) => {
+    const selectedUser = users.find(user => user.id === userId);
+    if (selectedUser) {
+      setUser(selectedUser);
+      sessionStorage.setItem('authUser', JSON.stringify(selectedUser));
+      if (selectedUser.id !== 0) {
+        setIsLoggedIn(true);
+      } else 
+        setIsLoggedIn(false);
+      }
   };
-  setUser(result);
-  sessionStorage.setItem('authUser', JSON.stringify(result));
-};
 
-const isLoggedIn = () => {
-  return user.role.id === 0;
-}
-
-const isOwner = () => {
-  return user.role.id === 1;
-}
-
-const isMember = () => {
-  return user.role.id === 2;
-}
-
-const canShowDetail = () => {
-  if (isOwner() || isMember())
-    return true;
-  return false;
-};
-
-const canEdit = () => {
-  if (user.role.id === 1)
-    return true;
-  return false;
-};
-
-  return (
-    <UserContext.Provider 
-      value = {{ 
-        user, 
-        users, 
-        changeUser, 
-        isLoggedIn,
-        isOwner,
-        isMember,
-        canShowDetail,
-        canEdit,
-      }}
-    >
-      {children}
+return (
+  <UserContext.Provider 
+    value = {{ 
+      user, 
+      users, 
+      isLoggedIn,
+      changeUser, 
+    }}
+      >
+        {children}
     </UserContext.Provider>
   );
 };

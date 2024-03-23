@@ -1,5 +1,5 @@
 import './App.css';
-import React, {useContext} from "react";
+import React, {useState, useContext} from "react";
 import { Outlet } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from "react-bootstrap/Navbar";
@@ -13,7 +13,7 @@ import UserContext from "./Provider";
 
 function App() {
   const {user, users, changeUser} = useContext(UserContext);
-
+ 
   return (
     <div class="App">
 
@@ -37,18 +37,17 @@ function App() {
             <Nav className="justify-content-end flex-grow-1 pe-3 d-flex align-items-center">
                 <NavDropdown title={user ? user.name : "Unregistred"} id="basic-nav-dropdown" noCaret>
                   {users
-                    .filter(user => user.id !== 0)
                     .sort((a, b) => a.name.localeCompare(b.name))
                     .map((user) => {
                       return (
                         <NavDropdown.Item onClick={() => changeUser(user.id)}>
-                          {user.name}
+                          {user.name} ({user.role.name})
                         </NavDropdown.Item>
                       )
                   })}
-                        <NavDropdown.Item onClick={() => changeUser(0)}>
+                        <NavDropdown.Item onClick={() => changeUser(-1)}>
                           Log out
-                        </NavDropdown.Item>   
+                        </NavDropdown.Item>
                 </NavDropdown>
                 <span className='me-3'></span>
                 <NavDropdown title="EN" id="basic-nav-dropdown" noCaret>  

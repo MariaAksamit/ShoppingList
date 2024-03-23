@@ -6,8 +6,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import {Provider} from "./Provider"
 import App from './App';
-import OverviewR from "./routes/OverviewR"
-import ShoppingListR from "./routes/ShoppingListR";
+import Overview from "./routes/Overview"
+import ShoppingList from './routes/ShoppingList';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -16,9 +16,9 @@ root.render(
       <Router>
         <Routes>
           <Route path="/" element={<App />}>
-            <Route path="" element={<OverviewR/>} />
-            <Route path="/shoppingList/:id" element={<ShoppingListR/>} />
-            <Route path="/overview" element={<OverviewR/>} />
+            <Route path="" element={<Overview/>} />
+            <Route path="shoppingList" element={<ShoppingList/>} />
+            <Route path="overview" element={<Overview/>} />
           </Route>
         </Routes>
       </Router>

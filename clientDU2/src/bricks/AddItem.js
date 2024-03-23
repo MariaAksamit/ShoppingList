@@ -7,6 +7,7 @@ import styles from "../styles/styles.css";
 export default function AddItem ({ addItem, handleShowModal }) {
   const [isModalShown, setShow] = useState(false);
   const [formData, setFormData] = useState({
+    id: "",
     item: "",
     amount: "",
     state: false,
@@ -15,6 +16,7 @@ export default function AddItem ({ addItem, handleShowModal }) {
   const handleCloseModal = () => {
     setShow(false);
     setFormData({
+      id: "",
       item: "",
       amount: "",
       state: false,
@@ -24,6 +26,7 @@ export default function AddItem ({ addItem, handleShowModal }) {
   const handleOpenModal = () => {
     handleShowModal();
     setFormData({
+        id: "",
         item: "",
         amount: "",
         state: false,
@@ -35,8 +38,14 @@ export default function AddItem ({ addItem, handleShowModal }) {
     if (isModalShown) handleOpenModal();
   }, [isModalShown]);
 
+  const generateId = () => {
+    const randomId = Math.floor(Math.random()*(900));
+    return randomId;
+  };
+
   const handleSaveItem = () => {
     const newItem = {
+      id: generateId(),
       item: formData.item,
       amount: formData.amount,
       state: false,
