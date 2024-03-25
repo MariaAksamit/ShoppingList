@@ -103,9 +103,7 @@ return (
   <>
   <Button 
     variant="success"
-    onClick={handleOpenModal}
-    style={{ marginLeft:"5px"}}
-  >
+    onClick={handleOpenModal}>
   <Icon path={mdiPlus} size={1} />
     Create
   </Button>

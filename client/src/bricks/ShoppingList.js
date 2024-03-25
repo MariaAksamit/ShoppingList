@@ -2,7 +2,7 @@ import React, {useState, useContext} from "react";
 import { Button, Table, Row, Col, Form, Accordion, Dropdown, DropdownButton } from "react-bootstrap";
 import Icon from "@mdi/react";
 import { mdiTrashCanOutline } from "@mdi/js";
-import {Link, useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 import styles from "../styles/styles.css";
 import AddItem from "./AddItem";
@@ -98,9 +98,8 @@ export default function ShoppingList ({ detail, ownerName, members }) {
       members: formData.members.filter(member => member !== memberName),
     }));
     
-    if (memberId === user.id) {
-      return <Link to={`/`}/> ;  
-    };
+    if (memberId === user.id) navigate(`/`);  
+    
   };
 
   const addMember = (newMember) => {
@@ -197,7 +196,10 @@ return (
               {!canEdit() && (
                 <Button
                   variant="outline-danger"
-                  onClick={() => handleDeleteMember(user.id)}
+                  onClick={() => {
+                    handleDeleteMember(user.name);
+                    handleBack();
+                  }}
                 >
                   Leave
                 </Button>

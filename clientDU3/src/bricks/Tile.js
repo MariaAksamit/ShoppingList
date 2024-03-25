@@ -1,62 +1,39 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, Button } from 'react-bootstrap';
 import styles from "../styles/styles.css";
-import ShoppingListDel from "./ShoppingListDel";
 
-function Tile ({ detail, users, lists }) {
+function Tile ({ detail, users }) {
   const navigate = useNavigate();
-  const [isModalShown, setShow] = useState(false);
   const ownerName = users.find((user) => user.id === detail.owner);
   const members = users
     .filter(user => detail.members.includes(user.id))
     .map(user => user.name);
   
-  const handleShowModal = () => {
-    setShow(true);
-  };
-
   const handleTileClick = () => {
     navigate(`/shoppingList/${detail.id}`, {state: {detail, ownerName, members}});
   };
 
-  const archiving =  (updArchive) => {
-    const updatedLists = lists.map(list => {
-      if (list.id === updArchive.id) {
-        return updArchive; // Ak sa zhoduje ID, aktualizujeme nákupný zoznam
-      } else {
-        return list; // Inak ponecháme nákupný zoznam nezmenený
-      }
-    });
-    };
-
 return (
-  <div className="tile">
+  <div className="tile" onClick={handleTileClick}>
   <Card className="listCard">
-    <ShoppingListDel
-      lists={lists}
-      detail={detail}
-      archiving={archiving}
-      handleShowModal={handleShowModal}
-    />
     <Card.Body>
         <strong> {detail.title} </strong> <br /> <br />
       <div style={{textAlign: "left"}}>
         <u>Owner:</u> {" "} {ownerName.name}
-        <div>
         <br />
+        <div>
         <u>Members:</u>
-        <div>{members.join(", ")}</div>
-
+        {members.map((member) => (
+            <div>{member}</div>
+        ))}
         <br />
         <u>Items:</u>
-        <ul className="item-list">
         {detail.items
             .filter((item) => item.state === false)
             .map((item) => (
-            <li>{item.item}</li>
+            <div>{item.item}</div>
         ))}
-        </ul>
         </div>
       </div>
       <br />

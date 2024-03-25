@@ -1,53 +1,55 @@
-import React, {useState, useContext, useEffect} from "react";
-import { Modal, Button, Table, Row, Col, Form, Accordion, Dropdown, DropdownButton } from "react-bootstrap";
+import React, {useState, useContext} from "react";
+import { Button, Table, Row, Col, Form, Accordion, Dropdown, DropdownButton } from "react-bootstrap";
 import Icon from "@mdi/react";
-import { mdiPlus, mdiTrashCanOutline } from "@mdi/js";
-import UserContext from "../Provider";
+import { mdiTrashCanOutline } from "@mdi/js";
+import {Link, useNavigate} from "react-router-dom"
 
 import styles from "../styles/styles.css";
 import AddItem from "./AddItem";
+import UserContext from "../Provider";
 
-export default function ShoppingList ({ handleShowModal }) {
-  const {user, users } = useContext(UserContext);
+export default function ShoppingList ({ detail, ownerName, members }) {
+  const {user, users} = useContext(UserContext);
   const [isModalShown, setShow] = useState(false);
+  const [showAllItems, setShowAllItems] = useState(true);
+  const navigate = useNavigate();
+
+  const initialItems = detail
+    ? detail.items.map(entry => ({
+      item: entry.item || "",
+      amount: entry.amount || "",
+      state: entry.state || "",
+    }))
+    : [];
+
   const [formData, setFormData] = useState({
-    title: "",
-    owner: user.name,
-    members: [],
-    items: [],
+    title: detail ? detail.title : "",
+    members: members,
+    items: initialItems,
     });
 
-    const handleCloseModal = () => {
-        setShow(false);
-      };
+  const handleShowModal = () => {
+    setShow(true);
+  };
 
-    const handleOpenModal = () => {
-        setFormData({
-            title: "",
-            owner: user.name,
-            members: [],
-            items: [],
-          });
-        handleShowModal();
-        setShow(true);
-      };
+  const setField = (name, val) => {
+    setFormData((formData) => {
+      return {...formData, [name]: val};
+    });
+  };
 
-  useEffect(() => {
-    if (isModalShown) handleOpenModal();
-    }, [isModalShown]);
-
-  const getTableValues = (itemId) => {
-    const entry = formData.items.find((a) => a.id === itemId);
+  const getTableValues = (itemName) => {
+    const entry = formData.items.find((a) => a.item === itemName);
       return {
         item: entry?.item || "",
         amount: entry?.amount || "",
       };
     };
     
-  const setTable = (itemId, updatedValues) => {
+  const setTable = (itemName, updatedValues) => {
     setFormData((prevFormData) => {
       const newItems = prevFormData.items.map((entry) => {
-        if (entry.id === itemId) {
+        if (entry.item === itemName) {
           return {
             ...entry,
             item: updatedValues.item,
@@ -65,16 +67,10 @@ export default function ShoppingList ({ handleShowModal }) {
         });
       };
 
-  const setField = (name, val) => {
-    setFormData((formData) => {
-      return {...formData, [name]: val};
-    });
-  };
-
-  const deleteItem = (itemId) => {
+  const deleteItem = (itemName) => {
         setFormData((formData) => ({
           ...formData,
-          items: formData.items.filter((item) => item.id !== itemId),
+          items: formData.items.filter((item) => item.name !== itemName),
         }));
       };
 
@@ -85,11 +81,26 @@ export default function ShoppingList ({ handleShowModal }) {
     }));
   };
 
-  const handleDeleteMember = (memberId) => {
+  const toggleShowAllItems = () => {
+    setShowAllItems((prevShowAllItems) => !prevShowAllItems);
+  };
+
+  const filteredItems = showAllItems
+  ? formData.items
+  : formData.items.filter((item) => !item.state);
+
+  const handleDeleteMember = (memberName) => {
+    const member = users.find(member => member.name === memberName);
+    const memberId = member ? member.id : null;
+
     setFormData(formData => ({
       ...formData,
-      members: formData.members.filter(member => member.id !== memberId),
+      members: formData.members.filter(member => member !== memberName),
     }));
+    
+    if (memberId === user.id) {
+      return <Link to={`/`}/> ;  
+    };
   };
 
   const addMember = (newMember) => {
@@ -99,75 +110,98 @@ export default function ShoppingList ({ handleShowModal }) {
     }))
   };
 
+  const handleBack = () => {
+    navigate(`/overview`);
+  };
+
+  const canEdit = () => {
+    if (user.id === detail.owner)
+      return true;
+    return false;
+  };
+  
 return (
   <>
-  <Button 
-    variant="success"
-    onClick={handleOpenModal}
-    style={{ marginLeft:"5px"}}
-  >
-  <Icon path={mdiPlus} size={1} />
-    Create
-  </Button>
 
-  <Modal show={isModalShown} onHide={handleCloseModal}>
-    <Modal.Header closeButton>
-      <Modal.Title>Create new shopping list: </Modal.Title>
-    </Modal.Header>
-
-    <Modal.Body>
-    <Form>
+  <div className="formDetail">
+      <div>
+  <Form>
       <Form.Group as={Row} className="mb-3">
-      <Form.Label column sm="2">Title:</Form.Label>
+      <Form.Label column sm="2">Shopping List:</Form.Label>
       <Col sm="10">
+      {canEdit() &&
       <Form.Control
         required
         type="text"
-        placeholder="Name of the shopping list"
         value={formData.title}
         minLength={3}
         maxLength={50}
         onChange={(e) => {setField("title", e.target.value)}}
-      />
+        disabled={!canEdit()}                      
+      />}
+      {!canEdit() && (
+        <Form.Control
+          plaintext
+          readOnly
+          defaultValue={formData.title}
+        />
+      )}
       </Col>
     </Form.Group>
+        <br />
     <Form.Group as={Row} className="mb-3" controlId="formPlaintextEmail">
       <Form.Label column sm="2">Owner: </Form.Label>
       <Col sm="10">
-        <Form.Control plaintext readOnly defaultValue={formData.owner}/>
+        <Form.Control plaintext readOnly defaultValue={ownerName.name}/>
       </Col>
     </Form.Group>
+      <br />
     <Accordion>
       <Accordion.Item eventKey="0">
         <Accordion.Header>Members</Accordion.Header>
         <Accordion.Body>
           <div>
             {formData.members.map((member) => (
-              <div key={member.id}>
+              <div>
+               {canEdit() && (
                 <Icon
                     path={mdiTrashCanOutline}
                     style={{ cursor: 'pointer', color: 'grey' }}
                     size={0.8}
-                    onClick={() => handleDeleteMember(member.id)}
+                    onClick={() => handleDeleteMember(member)}
                   />
+                )}
                   {" "}
-                {member.name}
+                {member}
               </div>
-            ))}    
+            ))}       
           </div>
           <Row>
             <Col className="text-end">
+              {canEdit() &&
                 <DropdownButton size="sm" title="Add member" variant="outline-primary">
                 {users
-                  .filter(us => ((us.id !== 0) && (us.id !== user.id)))
                   .filter((user) => !formData.members.some((member) => member.id === user.id))
-                  .sort((a, b) => a.name.localeCompare(b.name))
+                  .filter((user) => user.id !== detail.owner.id)
                   .map((user) => (
                     <Dropdown.Item key={user.id} onClick={() => addMember(user)}>
                       {user.name}
                     </Dropdown.Item>
                   ))}
                 </DropdownButton>
+              }
+            </Col>
+          </Row>
+          <Row>
+            <Col className="text-end">
+              {!canEdit() && (
+                <Button
+                  variant="outline-danger"
+                  onClick={() => handleDeleteMember(user.id)}
+                >
+                  Leave
+                </Button>
+              )}
             </Col>
           </Row>
         </Accordion.Body>
@@ -176,6 +210,13 @@ return (
       <br />
       <div>
         <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "5px" }}>
+          <Button 
+            variant="secondary" 
+            style={{ marginBottom: "5px", width: "190px" }}
+            onClick={toggleShowAllItems}
+          >
+            {showAllItems ? "Active Items" : "All Items"}
+          </Button>
           <AddItem addItem={addItem} handleShowModal={handleShowModal} />
         </div>
     <Table striped bordered>
@@ -189,8 +230,8 @@ return (
         </tr>
       </thead>
       <tbody>
-        {formData.items.map((entry, index) => {
-          const cellValues = getTableValues(entry.id);
+        {filteredItems.map((entry, index) => {
+          const cellValues = getTableValues(entry.item);
             return (
               <tr key={entry.item}>
                 <td>
@@ -235,17 +276,21 @@ return (
     </Table>
       </div>
   </Form>
-  </Modal.Body>
-  <Modal.Footer>
+    <br />
+    <div className="formDetailButton">
      <Button variant="success">Save</Button>
+      {canEdit() &&
+     <Button variant="danger"> Delete/Archive List</Button>
+      }
      <Button 
         variant="secondary"
-        onClick={handleCloseModal}    
-    >
-            Cancel
-    </Button>
-  </Modal.Footer>   
-  </Modal>
-    </>
+        onClick={handleBack}
+      >
+        Back
+      </Button>
+    </div>
+  </div>
+  </div>
+  </>
 );
 };

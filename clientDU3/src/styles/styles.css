@@ -39,12 +39,3 @@
     max-width: 100%;
     overflow: auto;
   }
-
-  .item-list {
-    list-style-type: none; /* Odstrániť zarážky */
-  }
-  
-  .item-list li:before {
-    content: "-"; /* Nastaviť pomlčku pred každým prvkom */
-    margin-right: 5px; /* Voliteľné: pridá medzeru medzi pomlčkou a textom */
-  }

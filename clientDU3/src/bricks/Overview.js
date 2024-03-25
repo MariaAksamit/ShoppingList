@@ -11,17 +11,8 @@ import ShoppingListCreate from "./ShoppingListCreate";
 export default function Overview ({ lists }) {
   const [isModalShown, setShow] = useState(false);
   const {user, users, isLoggedIn} = useContext(UserContext);
-  const [showAllLists, setShowAllLists] = useState(true);
 
   const handleOpenModal = () => setShow(true);
-
-  const toggleShowAllLists = () => {
-    setShowAllLists((prevShowAllLists) => !prevShowAllLists);
-  };
-
-  const filteredLists = showAllLists
-  ? lists
-  : lists.filter((list) => !list.archived);
 
 return (
 
@@ -32,17 +23,10 @@ return (
             <Navbar.Brand style={{fontSize: "100%"}}>Overview of shopping lists</Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse style={{ justifyContent: "flex-end" }}>
-            <Button 
-              variant="secondary" 
-              onClick={toggleShowAllLists}
-            >
-              {showAllLists ? "Active Lists" : "All Lists"}
-          </Button>
               <ShoppingListCreate 
                 handleShowModal={handleOpenModal}
               />            
             </Navbar.Collapse>
-            
         </div>
     </Navbar>
     }
@@ -56,7 +40,7 @@ return (
             className="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3"
             style={{ paddingBottom: "16px"}}
           >
-            <Tile detail={list} users={users} lists={lists}/>
+            <Tile detail={list} users={users}/>
           </div>
           );
         }
