@@ -1,7 +1,7 @@
-import React, {useState, useContext} from "react";
-import { Button, Row, Col, Form, Navbar, Pagination } from "react-bootstrap";
+import React, { useState, useContext, useMemo } from "react";
+import { Button, Form, Navbar, Pagination } from "react-bootstrap";
 import Icon from "@mdi/react";
-import { mdiTrashCanOutline } from "@mdi/js";
+import { mdiMagnify } from "@mdi/js";
 
 import styles from "../styles/styles.css";
 import UserContext from "../Provider";
@@ -11,17 +11,40 @@ import ShoppingListCreate from "./ShoppingListCreate";
 export default function Overview ({ lists }) {
   const [isModalShown, setShow] = useState(false);
   const {user, users, isLoggedIn} = useContext(UserContext);
+  const [searchBy, setSearchBy] = useState("");
   const [showAllLists, setShowAllLists] = useState(true);
 
   const handleOpenModal = () => setShow(true);
 
-  const toggleShowAllLists = () => {
-    setShowAllLists((prevShowAllLists) => !prevShowAllLists);
-  };
-
   const filteredLists = showAllLists
   ? lists
   : lists.filter((list) => !list.archived);
+
+  const filteredShoppingLists = useMemo(() => {
+    const filteredList = filteredLists.filter((item) => {
+      const ownerName = users.find(user => user.id === item.owner)?.name.toLowerCase() || ""; 
+      const memberNames = item.members.map(memberId => users.find(user => user.id === memberId)?.name.toLowerCase()); 
+      return (
+        item.title.toLowerCase().includes(searchBy.toLowerCase()) ||
+        ownerName.includes(searchBy.toLowerCase()) ||
+        memberNames.some(memberName => memberName.includes(searchBy.toLowerCase())) 
+      );
+    });
+    return filteredList;
+  }, [filteredLists, searchBy]);
+
+  function handleSearch(event) { 
+    event.preventDefault();
+    setSearchBy(event.target["searchInput"].value);
+  };
+
+  function handleSearchDelete(event) {   
+    if (!event.target.value) setSearchBy(""); 
+  };
+
+  const toggleShowAllLists = () => {
+    setShowAllLists((prevShowAllLists) => !prevShowAllLists);
+  };
 
 return (
 
@@ -32,24 +55,38 @@ return (
             <Navbar.Brand style={{fontSize: "100%"}}>Overview of shopping lists</Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse style={{ justifyContent: "flex-end" }}>
-            <Button 
-              variant="secondary" 
-              onClick={toggleShowAllLists}
-            >
-              {showAllLists ? "Active Lists" : "All Lists"}
-          </Button>
-              <ShoppingListCreate 
-                handleShowModal={handleOpenModal}
-              />            
-            </Navbar.Collapse>
-            
+              <Form className="d-flex" onSubmit={handleSearch}>
+                <Form.Control
+                  id={"searchInput"}
+                  style={{ maxWidth: "150px" }}
+                  type="search"
+                  placeholder="Search"
+                  aria-label="Search"
+                  onChange={handleSearchDelete}
+                />
+                <Button
+                  style={{ marginRight: "8px" }}
+                  variant="outline-success"
+                  type="submit"
+                >
+                <Icon size={1} path={mdiMagnify} />
+                </Button>
+              </Form>
+              <Button 
+                variant="secondary" 
+                onClick={toggleShowAllLists}
+              >
+                {showAllLists ? "Active Lists" : "All Lists"}
+              </Button>
+              <ShoppingListCreate handleShowModal={handleOpenModal}/>            
+            </Navbar.Collapse> 
         </div>
     </Navbar>
     }
 <div className="overview">
   {isLoggedIn && (   
 <div className="row">
-    {lists.map((list) => {
+    {filteredShoppingLists.map((list) => {
       if (user.id === list.owner || list.members.includes(user.id)) {
         return (
           <div

@@ -71,13 +71,20 @@ export function Provider({ children })  {
       }
   };
 
+  const canEdit = (ownerId) => {
+    if (user.id === ownerId)
+      return true;
+    return false;
+  };
+
 return (
   <UserContext.Provider 
     value = {{ 
       user, 
       users, 
       isLoggedIn,
-      changeUser, 
+      changeUser,
+      canEdit, 
     }}
       >
         {children}

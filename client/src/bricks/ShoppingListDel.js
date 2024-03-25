@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Button, Form } from 'react-bootstrap';
+import { Modal, Button, Alert } from 'react-bootstrap';
 import Icon from "@mdi/react";
 import { mdiTrashCanOutline } from "@mdi/js";
 import styles from "../styles/styles.css";
 
 export default function ShoppingListDel ({ lists, detail, archiving, handleShowModal }) {
   const [isModalShown, setShow] = useState(false);
-  
+  const [showAlert, setShowAlert] = useState(false);
+
   const handleCloseModal = () => setShow(false);
 
   const handleOpenModal = () => {
@@ -19,16 +20,10 @@ export default function ShoppingListDel ({ lists, detail, archiving, handleShowM
   }, [isModalShown]);
 
   const handleDelete = () => {
+
     setShow(false);
 };
-
-const handleArchive = () => {
-    const updArchive = { ...detail, archived: true }
-    archiving(updArchive);
-    setShow(false);
-};
-
-   
+  
 return (
 <>
 <Icon
@@ -51,14 +46,17 @@ return (
       <Button 
         variant="primary"
         style={{ marginLeft: "8px" }}
-        onClick={handleArchive} 
-      >
+        onClick={() => {
+            archiving({ ...detail, archived: true }); 
+            handleCloseModal();
+        }}
+        >
         Archive
       </Button>
       <Button 
         variant="danger"
         style={{ marginLeft: "8px" }}
-        onClick={handleDelete} 
+        onClick={() => setShowAlert(true)} 
       >
         Delete
       </Button>
@@ -70,7 +68,34 @@ return (
         Close
       </Button>  
     </Modal.Footer>
+
+    <Alert
+        show={showAlert}
+        variant="danger" 
+        onClose={() => setShowAlert(false)}
+        dismissible
+    >
+        <p> Are you sure about delete this shopping list? </p>
+        <hr />
+        <div className="d-flex justify-content-end">
+            <Button 
+              onClick={() => {
+                setShowAlert(false);
+                handleCloseModal();
+              }} 
+                variant="outline-danger"
+            >
+             Cancel
+            </Button>
+            <Button onClick={handleDelete} variant="danger" style={{marginLeft: "5px"}}>
+             Delete
+            </Button>
+        </div>
+    </Alert>
+
   </Modal>
+
+
 </>
 );
 };

@@ -79,7 +79,7 @@ function OverviewR() {
         },
         {
           "id": 111,
-          "title": "Rodinná večera",
+          "title": "Posledná večera",
           "owner": 3,
           "members": [2,4,8,10],
           "items": [
@@ -105,7 +105,36 @@ function OverviewR() {
             }
           ],
           "archived": false,
-          }
+          },
+          {
+            "id": 222,
+            "title": "Upratovanie",
+            "owner": 3,
+            "members": [1,7,9,11],
+            "items": [
+              {
+                "item": "Bref",
+                "amount": "1 ks",
+                "state": false
+              },
+              {
+                "item": "Sanytol",
+                "amount": "2 ks",
+                "state": false
+              },
+              {
+                "item": "Handra",
+                "amount": "3 kusy",
+                "state": false
+              },
+              {
+                "item": "Vedro",
+                "amount": "1 ks",
+                "state": false
+              }
+            ],
+            "archived": true,
+            }
     ];
 
     return (

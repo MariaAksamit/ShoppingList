@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, Button } from 'react-bootstrap';
 import styles from "../styles/styles.css";
 import ShoppingListDel from "./ShoppingListDel";
+import UserContext from "../Provider";
 
-function Tile ({ detail, users, lists }) {
+function Tile ({ detail, lists }) {
   const navigate = useNavigate();
+  const { users, canEdit} = useContext(UserContext);
   const [isModalShown, setShow] = useState(false);
   const ownerName = users.find((user) => user.id === detail.owner);
   const members = users
@@ -33,12 +35,17 @@ function Tile ({ detail, users, lists }) {
 return (
   <div className="tile">
   <Card className="listCard">
+   {detail.archived && (
+      <div style={{color: "red", fontSize: "80%"}}>List is archived.</div>
+    )}
+   {canEdit(detail.owner) &&
     <ShoppingListDel
       lists={lists}
       detail={detail}
       archiving={archiving}
       handleShowModal={handleShowModal}
     />
+}
     <Card.Body>
         <strong> {detail.title} </strong> <br /> <br />
       <div style={{textAlign: "left"}}>

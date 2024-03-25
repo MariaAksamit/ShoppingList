@@ -1,4 +1,4 @@
-import React, {useState, useContext} from "react";
+import React, { useState, useContext } from "react";
 import { Button, Table, Row, Col, Form, Accordion, Dropdown, DropdownButton } from "react-bootstrap";
 import Icon from "@mdi/react";
 import { mdiTrashCanOutline } from "@mdi/js";
@@ -9,10 +9,10 @@ import AddItem from "./AddItem";
 import UserContext from "../Provider";
 
 export default function ShoppingList ({ detail, ownerName, members }) {
-  const {user, users} = useContext(UserContext);
+  const navigate = useNavigate();
+  const {user, users, canEdit} = useContext(UserContext);
   const [isModalShown, setShow] = useState(false);
   const [showAllItems, setShowAllItems] = useState(true);
-  const navigate = useNavigate();
 
   const initialItems = detail
     ? detail.items.map(entry => ({
@@ -113,12 +113,6 @@ export default function ShoppingList ({ detail, ownerName, members }) {
     navigate(`/overview`);
   };
 
-  const canEdit = () => {
-    if (user.id === detail.owner)
-      return true;
-    return false;
-  };
-  
 return (
   <>
 
@@ -128,7 +122,7 @@ return (
       <Form.Group as={Row} className="mb-3">
       <Form.Label column sm="2">Shopping List:</Form.Label>
       <Col sm="10">
-      {canEdit() &&
+      {canEdit(detail.owner) &&
       <Form.Control
         required
         type="text"
@@ -138,7 +132,7 @@ return (
         onChange={(e) => {setField("title", e.target.value)}}
         disabled={!canEdit()}                      
       />}
-      {!canEdit() && (
+      {!canEdit(detail.owner) && (
         <Form.Control
           plaintext
           readOnly
@@ -162,7 +156,7 @@ return (
           <div>
             {formData.members.map((member) => (
               <div>
-               {canEdit() && (
+               {canEdit(detail.owner) && (
                 <Icon
                     path={mdiTrashCanOutline}
                     style={{ cursor: 'pointer', color: 'grey' }}
@@ -177,7 +171,7 @@ return (
           </div>
           <Row>
             <Col className="text-end">
-              {canEdit() &&
+              {canEdit(detail.owner) &&
                 <DropdownButton size="sm" title="Add member" variant="outline-primary">
                 {users
                   .filter((user) => !formData.members.some((member) => member.id === user.id))
@@ -193,7 +187,7 @@ return (
           </Row>
           <Row>
             <Col className="text-end">
-              {!canEdit() && (
+              {!canEdit(detail.owner) && (
                 <Button
                   variant="outline-danger"
                   onClick={() => {
@@ -281,7 +275,7 @@ return (
     <br />
     <div className="formDetailButton">
      <Button variant="success">Save</Button>
-      {canEdit() &&
+      {canEdit(detail.owner) &&
      <Button variant="danger"> Delete/Archive List</Button>
       }
      <Button 
