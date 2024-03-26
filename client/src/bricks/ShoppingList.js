@@ -70,7 +70,7 @@ export default function ShoppingList ({ detail, ownerName, members }) {
   const deleteItem = (itemName) => {
         setFormData((formData) => ({
           ...formData,
-          items: formData.items.filter((item) => item.name !== itemName),
+          items: formData.items.filter((item) => item.item !== itemName),
         }));
       };
 

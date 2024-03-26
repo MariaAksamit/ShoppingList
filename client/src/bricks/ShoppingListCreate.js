@@ -36,18 +36,24 @@ export default function ShoppingList ({ handleShowModal }) {
     if (isModalShown) handleOpenModal();
     }, [isModalShown]);
 
-  const getTableValues = (itemId) => {
-    const entry = formData.items.find((a) => a.id === itemId);
+  const setField = (name, val) => {
+    setFormData((formData) => {
+      return {...formData, [name]: val};
+    });
+  };
+
+  const getTableValues = (itemName) => {
+    const entry = formData.items.find((a) => a.item === itemName);
       return {
         item: entry?.item || "",
         amount: entry?.amount || "",
       };
     };
-    
-  const setTable = (itemId, updatedValues) => {
+  
+  const setTable = (itemName, updatedValues) => {
     setFormData((prevFormData) => {
       const newItems = prevFormData.items.map((entry) => {
-        if (entry.id === itemId) {
+        if (entry.item === itemName) {
           return {
             ...entry,
             item: updatedValues.item,
@@ -65,18 +71,12 @@ export default function ShoppingList ({ handleShowModal }) {
         });
       };
 
-  const setField = (name, val) => {
-    setFormData((formData) => {
-      return {...formData, [name]: val};
-    });
+  const deleteItem = (itemName) => {
+    setFormData((formData) => ({
+      ...formData,
+      items: formData.items.filter((item) => item.item !== itemName),
+    }));
   };
-
-  const deleteItem = (itemId) => {
-        setFormData((formData) => ({
-          ...formData,
-          items: formData.items.filter((item) => item.id !== itemId),
-        }));
-      };
 
   const addItem = (newItem) => {
     setFormData((prevFormData) => ({
@@ -184,13 +184,12 @@ return (
           <th>#</th>
           <th>Item Name</th>
           <th>Amount</th>
-          <th>State</th>
           <th> </th>
         </tr>
       </thead>
       <tbody>
         {formData.items.map((entry, index) => {
-          const cellValues = getTableValues(entry.id);
+          const cellValues = getTableValues(entry.item);
             return (
               <tr key={entry.item}>
                 <td>
@@ -212,13 +211,6 @@ return (
                     onChange={(e) => {setTable(entry.item, { ...cellValues, amount: e.target.value })}}
                     required 
                   /> 
-                </td>
-                <td>
-                  <Form.Check
-                    type="checkbox"
-                    checked={entry.state || false} 
-                    onChange={(e) => setTable(entry.item, { ...cellValues, state: e.target.checked })}
-                  />
                 </td>
                 <td>
                   <Icon
