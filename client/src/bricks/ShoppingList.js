@@ -68,9 +68,9 @@ export default function ShoppingList ({ detail, ownerName, members }) {
       };
 
   const deleteItem = (itemName) => {
-        setFormData((formData) => ({
-          ...formData,
-          items: formData.items.filter((item) => item.item !== itemName),
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          items: prevFormData.items.filter((item) => item.item !== itemName),
         }));
       };
 
@@ -81,6 +81,18 @@ export default function ShoppingList ({ detail, ownerName, members }) {
     }));
   };
 
+  const handleEditItem = (itemName, updatedValues) => {
+    setFormData(prevFormData => ({
+      ...prevFormData,
+      items: prevFormData.items.map(item => {
+        if (item.item === itemName) {
+          return { ...item, ...updatedValues };
+        }
+        return item;
+      }),
+    }));
+  };
+  
   const toggleShowAllItems = () => {
     setShowAllItems((prevShowAllItems) => !prevShowAllItems);
   };
@@ -229,7 +241,7 @@ return (
         {filteredItems.map((entry, index) => {
           const cellValues = getTableValues(entry.item);
             return (
-              <tr key={entry.item}>
+              <tr key={index}>
                 <td>
                   {index + 1}
                 </td>
