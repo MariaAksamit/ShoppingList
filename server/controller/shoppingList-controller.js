@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
 
-const CreateAbl = require("../abl/recipe/create-abl");
-const GetAbl = require("../abl/recipe/get-abl");
-const UpdateAbl = require("../abl/recipe/update-abl");
-const DeleteAbl = require("../abl/recipe/delete-abl");
-const ListAbl = require("../abl/recipe/list-abl");
+const CreateAbl = require("../abl/create-abl");
+const GetAbl = require("../abl/get-abl");
+const UpdateAbl = require("../abl/update-abl");
+const DeleteAbl = require("../abl/delete-abl");
+const ListAbl = require("../abl/list-abl");
 
 router.post("/create", async (req, res) => {
   await CreateAbl(req, res);

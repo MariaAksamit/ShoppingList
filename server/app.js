@@ -3,8 +3,7 @@ const fs = require("fs");
 const express = require("express");
 const cors = require("cors");
 
-const recipeRouter = require("./controller/recipe-controller");
-const ingredientRouter = require("./controller/ingredient-controller");
+const shoppingListRouter = require("./controller/shoppingList-controller");
 
 //inicializace nového Express.js serveru
 const app = express();
@@ -17,8 +16,7 @@ app.use(express.urlencoded({ extended: true })); // podpora pro application/x-ww
 
 app.use(cors())
 
-app.use("/recipe", recipeRouter);
-app.use("/ingredient", ingredientRouter);
+app.use("/shoppingList", shoppingListRouter);
 
 
 app.get("/*", (req, res) => {
