@@ -3,7 +3,7 @@ const fs = require("fs");
 const express = require("express");
 const cors = require("cors");
 
-const shoppingListRouter = require("./controller/shoppingList-controller");
+const shoppingListRouter = require("./controller/list-controller");
 
 //inicializace nového Express.js serveru
 const app = express();

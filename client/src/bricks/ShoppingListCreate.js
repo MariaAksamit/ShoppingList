@@ -191,7 +191,7 @@ return (
         {formData.items.map((entry, index) => {
           const cellValues = getTableValues(entry.item);
             return (
-              <tr key={entry.item}>
+              <tr key={index}>
                 <td>
                   {index + 1}
                 </td>
