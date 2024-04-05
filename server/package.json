@@ -10,13 +10,17 @@
   "student": "",
   "license": "ISC",
   "dependencies": {
+    "@mdi/js": "^7.4.47",
+    "@mdi/react": "^1.6.1",
     "ajv": "^8.12.0",
     "axios": "^0.26.1",
-    "bootstrap": "^5.3.2",
+    "bootstrap": "^5.3.3",
     "busboy": "^1.5.0",
     "cors": "^2.8.5",
     "express": "^4.17.3",
     "form-data": "^4.0.0",
-    "neat-csv": "^6.0.1"
+    "neat-csv": "^6.0.1",
+    "react-bootstrap": "^2.10.2",
+    "react-router-dom": "^6.22.3"
   }
 }

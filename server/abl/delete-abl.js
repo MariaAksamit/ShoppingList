@@ -1,8 +1,8 @@
 const path = require("path");
 const Ajv = require("ajv").default;
-const ListDao = require("../../dao/list-dao");
+const ListDao = require("../dao/shList-dao");
 let dao = new ListDao(
-  path.join(__dirname, "..", "..", "storage", "lists.json")
+  path.join(__dirname, "..", "storage", "lists.json")
 );
 
 let schema = {
@@ -23,7 +23,7 @@ async function DeleteAbl(req, res) {
       res.json({});
     } else {
       res.status(400).send({
-        errorMessage: "validation of input failed",
+        errorMessage: "Validation of input failed.",
         params: req.body,
         reason: ajv.errors,
       });

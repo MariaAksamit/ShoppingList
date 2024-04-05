@@ -1,30 +1,35 @@
 const fs = require("fs");
-//načtení modulu express
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 
-const shoppingListRouter = require("./controller/list-controller");
+const shoppingListRouter = require("./controller/shList-controller");
 
-//inicializace nového Express.js serveru
 const app = express();
-//definování portu, na kterém má aplikace běžet na localhostu
 const port = process.env.PORT || 8000;
 
-// Parsování body
-app.use(express.json()); // podpora pro application/json
-app.use(express.urlencoded({ extended: true })); // podpora pro application/x-www-form-urlencoded
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use(cors())
 
 app.use("/shoppingList", shoppingListRouter);
 
+app.get("/users", (req, res) => {
+  try {
+    const usersData = fs.readFileSync(path.join(__dirname, "storage", "users.json"), "utf-8");
+    const users = JSON.parse(usersData);
+    res.json(users);
+  } catch (error) {
+    console.error("Error reading users.json file: ", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
 
 app.get("/*", (req, res) => {
   res.send("Unknown path!");
 });
 
-
-//nastavení portu, na kterém má běžet HTTP server
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });

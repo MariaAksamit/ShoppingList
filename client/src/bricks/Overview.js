@@ -12,13 +12,13 @@ export default function Overview ({ lists }) {
   const [isModalShown, setShow] = useState(false);
   const {user, users, isLoggedIn} = useContext(UserContext);
   const [searchBy, setSearchBy] = useState("");
-  const [showAllLists, setShowAllLists] = useState(true);
+  const [showActiveLists, setshowActiveLists] = useState(true);
 
   const handleOpenModal = () => setShow(true);
 
-  const filteredLists = showAllLists
-  ? lists
-  : lists.filter((list) => !list.archived);
+  const filteredLists = showActiveLists
+  ? lists.filter((list) => !list.archived)
+  : lists;
 
   const filteredShoppingLists = useMemo(() => {
     const filteredList = filteredLists.filter((item) => {
@@ -42,8 +42,8 @@ export default function Overview ({ lists }) {
     if (!event.target.value) setSearchBy(""); 
   };
 
-  const toggleShowAllLists = () => {
-    setShowAllLists((prevShowAllLists) => !prevShowAllLists);
+  const toggleshowActiveLists = () => {
+    setshowActiveLists((prevshowActiveLists) => !prevshowActiveLists);
   };
 
 return (
@@ -74,9 +74,9 @@ return (
               </Form>
               <Button 
                 variant="secondary" 
-                onClick={toggleShowAllLists}
+                onClick={toggleshowActiveLists}
               >
-                {showAllLists ? "Active Lists" : "All Lists"}
+                {showActiveLists ? "All Lists" : "Active Lists"}
               </Button>
               <ShoppingListCreate handleShowModal={handleOpenModal}/>            
             </Navbar.Collapse> 
@@ -100,16 +100,6 @@ return (
       })}
           </div>
       )}
-</div>
-<div className="d-flex justify-content-center mt-3">
-  
-<Pagination>
-    <Pagination.First />
-    <Pagination.Prev />
-      <Pagination.Item>{1}</Pagination.Item>
-    <Pagination.Next />
-    <Pagination.Last />
-</Pagination>
 </div>
 </div>
 );

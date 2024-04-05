@@ -7,7 +7,7 @@ const crypto = require("crypto");
 const rf = fs.promises.readFile;
 const wf = fs.promises.writeFile;
 
-const DEFAULT_STORAGE_PATH = path.join(__dirname, "storage", "lists.json");
+const DEFAULT_STORAGE_PATH = (path.join(__dirname, "..", "storage", "lists.json"), "utf-8");
 
 class ListDao {
   constructor(storagePath) {
@@ -40,7 +40,7 @@ class ListDao {
     );
     if (listIndex < 0) {
       throw new Error(
-        `list with given id ${list.id} does not exists`
+        `List with given id ${list.id} does not exists.`
       );
     } else {
       listList[listIndex] = {
@@ -69,18 +69,18 @@ class ListDao {
   }
 
   async listLists() {
-    let listList = await this._loadAllLists();
-    return listList;
+    let listLists = await this._loadAllLists();
+    return listLists;
   }
 
   async _loadAllLists() {
-    let listList;
+    let listLists;
     try {
-      listList = JSON.parse(await rf(this._getStorageLocation()));
+      listLists = JSON.parse(await rf(this._getStorageLocation()));
     } catch (e) {
       if (e.code === "ENOENT") {
         console.info("No storage found, initializing new one...");
-        listList = [];
+        listLists = [];
       } else {
         throw new Error(
           "Unable to read from storage. Wrong data format. " +
@@ -88,7 +88,7 @@ class ListDao {
         );
       }
     }
-    return listList;
+    return listLists;
   }
 
   _getStorageLocation() {

@@ -1,59 +1,17 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 
 const UserContext = createContext();
 
 export function Provider({ children })  {
-  
-  const users = [
-    {
-      "id": 0,
-      "name": "Logout",
-    },
-    {
-      "id": 1,
-      "name": "Cassandra Clare",
-    },
-    {
-      "id": 2,
-      "name": "Jace Wayland",
-    },
-    {
-      "id": 3,
-      "name": "Jocelyn Morgernstern",
-    },
-    {
-      "id": 4,
-      "name": "Alec Lightwood",
-    },
-    {
-      "id": 5,
-      "name": "Clary Fairchild",
-    },
-    {
-      "id": 6,
-      "name": "Hodge Starkweather",
-    },
-    {
-      "id": 7,
-      "name": "Simon Lewis",
-    },
-    {
-      "id": 8,
-      "name": "Magnus Bane",
-    },
-    {
-      "id": 9,
-      "name": "Isabelle Lightwood",
-    },
-    {
-      "id": 10,
-      "name": "Aline Penhallow",
-    },
-    {
-      "id": 11,
-      "name": "Julian Blackthorn",
-    },
-  ];
+ const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    fetch('http://127.0.0.1:8000/users')
+       .then(response => response.json())
+       .then(data => setUsers(data))
+       .catch(error => console.error('Error fetching data:', error));
+
+  }, []);
 
   const alreadyLogged = JSON.parse(sessionStorage.getItem('authUser'));
   const [isLoggedIn, setIsLoggedIn] = useState(!!alreadyLogged);
@@ -64,11 +22,12 @@ export function Provider({ children })  {
     if (selectedUser) {
       setUser(selectedUser);
       sessionStorage.setItem('authUser', JSON.stringify(selectedUser));
-      if (selectedUser.id !== 0) {
-        setIsLoggedIn(true);
-      } else 
+      setIsLoggedIn(selectedUser.id !== 0);
+    } else {
+        setUser(null); 
+        sessionStorage.removeItem('authUser');
         setIsLoggedIn(false);
-      }
+    }
   };
 
   const canEdit = (ownerId) => {

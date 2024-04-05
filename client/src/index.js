@@ -6,8 +6,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import {Provider} from "./Provider"
 import App from './App';
-import OverviewR from "./routes/OverviewR"
 import ShoppingListR from "./routes/ShoppingListR";
+import OverviewR from './routes/OverviewR';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

@@ -4,7 +4,7 @@ import { Outlet } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
-import NavDropdown from "react-bootstrap/NavDropdown";
+import { NavDropdown, Button } from "react-bootstrap";
 import Container from "react-bootstrap/Container";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import Icon from '@mdi/react' 
@@ -37,7 +37,6 @@ function App() {
             <Nav className="justify-content-end flex-grow-1 pe-3 d-flex align-items-center">
                 <NavDropdown title={user ? user.name : "Unregistred"} id="basic-nav-dropdown" noCaret>
                   {users
-                    .filter(user => user.id !== 0)
                     .sort((a, b) => a.name.localeCompare(b.name))
                     .map((user) => {
                       return (
@@ -46,9 +45,6 @@ function App() {
                         </NavDropdown.Item>
                       )
                   })}
-                        <NavDropdown.Item onClick={() => changeUser(0)}>
-                          Log out
-                        </NavDropdown.Item>   
                 </NavDropdown>
                 <span className='me-3'></span>
                 <NavDropdown title="EN" id="basic-nav-dropdown" noCaret>  
@@ -57,6 +53,12 @@ function App() {
                 </NavDropdown>
                 <span className="me-2"></span>
                 <Icon path={mdiMoonWaningCrescent} size={1} color="white"/>
+                <Button 
+                  variant="dark"
+                  onClick={() => changeUser(null)}
+                >
+                  Log out
+                </Button>
               </Nav>
             </Offcanvas.Body>
           </Navbar.Offcanvas>

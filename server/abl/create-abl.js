@@ -1,8 +1,8 @@
 const path = require("path");
 const Ajv = require("ajv");
-const ListDao = require("../../dao/list-dao");
+const ListDao = require("../dao/shList-dao");
 let dao = new ListDao(
-  path.join(__dirname, "..", "..", "storage", "lists.json")
+  path.join(__dirname, "..", "storage", "lists.json")
 );
 
 let schema = {
@@ -17,7 +17,7 @@ let schema = {
     },
     items: {
       type: "array",
-      minItems: 0,
+      minItems: 1,
       items: [
         {
           type: "object",
@@ -26,7 +26,7 @@ let schema = {
             amount: { type: "string" },
             state: { type: "boolean" },
           },
-         // required: ["item"],
+         required: ["item"],
         }
       ]
     },
@@ -45,7 +45,7 @@ async function CreateAbl(req, res) {
       res.json(list);
     } else {
       res.status(400).send({
-        errorMessage: "validation of input failed",
+        errorMessage: "Validation of input failed.",
         params: req.body,
         reason: ajv.errors,
       });
