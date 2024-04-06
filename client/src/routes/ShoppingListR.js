@@ -5,11 +5,16 @@ import ShoppingList from "../bricks/ShoppingList";
 
 function ShoppingListR() {
    const location = useLocation();
-   const { detail, ownerName, members } = location.state;
+   const { lists, detail, ownerName, members } = location.state;
 
    return (
       <div>
-         <ShoppingList detail={detail} ownerName={ownerName} members={members} />
+         <ShoppingList 
+            lists= {lists} 
+            detail={detail} 
+            ownerName={ownerName} 
+            members={members} 
+         />
       </div>
    );
 };

@@ -6,12 +6,14 @@ import { useNavigate } from "react-router-dom"
 
 import styles from "../styles/styles.css";
 import AddItem from "./AddItem";
+import ShoppingListDel from "./ShoppingListDel";
 import UserContext from "../Provider";
 
-export default function ShoppingList ({ detail, ownerName, members }) {
+export default function ShoppingList ({ detail, lists, ownerName, members }) {
   const navigate = useNavigate();
   const {user, users, canEdit} = useContext(UserContext);
   const [isModalShown, setShow] = useState(false);
+  const [isDeleteModalShown, setDeleteModalShown] = useState(false);
   const [showAllItems, setShowAllItems] = useState(true);
 
   const initialItems = detail
@@ -124,6 +126,16 @@ export default function ShoppingList ({ detail, ownerName, members }) {
   const handleBack = () => {
     navigate(`/overview`);
   };
+
+  const archiving =  (updArchive) => {
+    const updatedLists = lists.map(list => {
+      if (list.id === updArchive.id) {
+        return updArchive; // Ak sa zhoduje ID, aktualizujeme nákupný zoznam
+      } else {
+        return list; // Inak ponecháme nákupný zoznam nezmenený
+      }
+    });
+    };
 
 return (
   <>
@@ -286,17 +298,40 @@ return (
   </Form>
     <br />
     <div className="formDetailButton">
-     <Button variant="success">Save</Button>
-      {canEdit(detail.owner) &&
-     <Button variant="danger"> Delete/Archive List</Button>
-      }
-     <Button 
+      <Button 
+        variant="success"
+      >
+          Save
+      </Button>
+    {canEdit(detail.owner) &&
+      <Button 
+        variant="danger"
+        onClick={() => {setDeleteModalShown(true)}}
+      > 
+          Delete/Archive List
+      </Button>
+    }
+      <ShoppingListDel 
+        detail={detail}
+        archiving={archiving}
+        onClose={() => setDeleteModalShown(false)}
+        isDeleteModalShown={isDeleteModalShown}
+      />
+      <Button 
         variant="secondary"
         onClick={handleBack}
       >
         Back
       </Button>
     </div>
+    {isDeleteModalShown && (
+      <ShoppingListDel
+        detail={detail}
+        archiving={archiving}
+        handleShowModal={handleShowModal}
+        onClose={() => setDeleteModalShown(false)} // Zatvorí modálne okno pre vymazanie
+      />
+    )}
   </div>
   </div>
   </>

@@ -1,5 +1,5 @@
 import React, {useState, useContext, useEffect} from "react";
-import { Modal, Button, Table, Row, Col, Form, Accordion, Dropdown, DropdownButton } from "react-bootstrap";
+import { Alert, Modal, Button, Table, Row, Col, Form, Accordion, Dropdown, DropdownButton } from "react-bootstrap";
 import Icon from "@mdi/react";
 import { mdiPlus, mdiTrashCanOutline } from "@mdi/js";
 import UserContext from "../Provider";
@@ -10,6 +10,9 @@ import AddItem from "./AddItem";
 export default function ShoppingList ({ handleShowModal }) {
   const {user, users } = useContext(UserContext);
   const [isModalShown, setShow] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [titleError, setTitleError] = useState(null);
+  const [listCall, setListCall] = useState({ state: "pending" });
   const [formData, setFormData] = useState({
     title: "",
     owner: user.name,
@@ -34,7 +37,54 @@ export default function ShoppingList ({ handleShowModal }) {
 
   useEffect(() => {
     if (isModalShown) handleOpenModal();
-    }, [isModalShown]);
+    }, [isModalShown]);     
+
+    const handleCreateList = async (e) => {
+      try {
+        e.preventDefault();
+        e.stopPropagation();
+                     
+        // Resetujte chyby pred každým overením
+        setTitleError(null);
+  
+        if (formData.title.length < 3 || formData.title.length > 50) {
+          setTitleError("The title must be 3 - 50 characters long.");
+          return;
+        };
+  
+        if (formData.items.length === 0) {
+          setShowAlert(true);
+          return;
+        };
+        
+        const newList = {
+          title: formData.title,
+          owner: user.id,
+          members: formData.members,
+          items: formData.items,
+          archived: false
+        };
+      
+        const response = await fetch('http://127.0.0.1:8000/shoppingList/create', {
+          method: "POST",
+          headers: {
+          "Content-Type": "application/json",
+        },
+          body: JSON.stringify(newList),
+        });
+      
+        if (response.ok) {
+          setShow(false);
+        } else {
+          const errorData = await response.json();
+          setListCall({ state: "error", error: errorData });
+        };
+  
+        } catch (error) {
+          setListCall({ state: "error", error: error.message });
+        } finally {
+        }
+    };
 
   const setField = (name, val) => {
     setFormData((formData) => {
@@ -111,6 +161,7 @@ return (
   </Button>
 
   <Modal show={isModalShown} onHide={handleCloseModal}>
+    
     <Modal.Header closeButton>
       <Modal.Title>Create new shopping list: </Modal.Title>
     </Modal.Header>
@@ -130,6 +181,9 @@ return (
         onChange={(e) => {setField("title", e.target.value)}}
       />
       </Col>
+      {titleError && (
+        <Form.Text className="text-danger"> {titleError} </Form.Text>
+        )}
     </Form.Group>
     <Form.Group as={Row} className="mb-3" controlId="formPlaintextEmail">
       <Form.Label column sm="2">Owner: </Form.Label>
@@ -228,16 +282,42 @@ return (
       </div>
   </Form>
   </Modal.Body>
+  
   <Modal.Footer>
-     <Button variant="success">Save</Button>
+     <Button 
+        variant="success"
+        onClick={handleCreateList}
+     >
+            Save
+     </Button>
      <Button 
         variant="secondary"
         onClick={handleCloseModal}    
     >
             Cancel
     </Button>
-  </Modal.Footer>   
-  </Modal>
-    </>
+  </Modal.Footer>  
+  
+  <Alert
+    show={showAlert}
+    variant="warning" 
+    onClose={() => setShowAlert(false)}
+    dismissible
+  >
+    <p> The list contains no items. Add at least one. </p>
+    <hr />
+    <div className="d-flex justify-content-end">
+      <Button 
+        onClick={() => {
+        setShowAlert(false);
+        }} 
+        variant="outline-danger"
+      >
+        Cancel
+      </Button>
+    </div>
+  </Alert> 
+</Modal>
+  </>
 );
 };

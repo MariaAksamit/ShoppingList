@@ -1,41 +1,67 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button, Alert } from 'react-bootstrap';
-import Icon from "@mdi/react";
-import { mdiTrashCanOutline } from "@mdi/js";
+import { useNavigate } from "react-router-dom";
 import styles from "../styles/styles.css";
 
-export default function ShoppingListDel ({ lists, detail, archiving, handleShowModal }) {
-  const [isModalShown, setShow] = useState(false);
+export default function ShoppingListDel ({ detail, archiving, onClose, isDeleteModalShown }) {
+  const navigate = useNavigate();
   const [showAlert, setShowAlert] = useState(false);
-
-  const handleCloseModal = () => setShow(false);
-
-  const handleOpenModal = () => {
-    handleShowModal();
-    setShow(true);
-  }
+  const [isModalShown, setShow] = useState(false);
 
   useEffect(() => {
-    if (isModalShown) handleOpenModal();
-  }, [isModalShown]);
+    if (isDeleteModalShown) {
+      setShow(true);
+    }
+  }, [isDeleteModalShown]);
 
-  const handleDelete = () => {
-
+  const handleCloseModal = () => {
     setShow(false);
+    onClose();
+  };
+
+const handleDelete = async () => {
+  try {
+    console.log("Deleting list:", detail);
+    const response = await fetch("http://127.0.0.1:8000/shoppingList/delete", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: detail.id }),
+    });
+
+    if (response.ok) {
+      console.log("List deleted successfully.");
+    } else {
+      const errorData = await response.json();
+      console.error("Error deleting list.:", errorData);
+    }
+  } catch (error) {
+    console.error("Error deleting list:", error);
+  } finally {
+    setShow(false);
+    onClose();
+    navigate(`/overview`);  
+  }
 };
-  
+
+const handleConfirmDelete = async () => {
+  try {
+    await handleDelete();
+  } catch (error) {
+    console.error("Error deleting recipe:", error);
+  } finally {
+    // Close the delete confirmation modal
+    setShow(false);
+    onClose();
+  }
+};
+
 return (
 <>
-<Icon
-    path={mdiTrashCanOutline}
-    style={{ cursor: 'pointer', color: 'grey' }}
-    size={0.8}
-    onClick={() => handleOpenModal()}
-/>
-
-  <Modal show={isModalShown} onHide={handleCloseModal}>
+<Modal show={isModalShown} onHide={handleCloseModal}>
     <Modal.Header closeButton>
-      <Modal.Title>Archive / delete shopping list: </Modal.Title>
+      <Modal.Title>Archive / delete shopping list </Modal.Title>
     </Modal.Header>
 
     <Modal.Body>
@@ -48,7 +74,6 @@ return (
         style={{ marginLeft: "8px" }}
         onClick={() => {
             archiving({ ...detail, archived: true }); 
-            handleCloseModal();
         }}
         >
         Archive
@@ -81,21 +106,21 @@ return (
             <Button 
               onClick={() => {
                 setShowAlert(false);
-                handleCloseModal();
               }} 
                 variant="outline-danger"
             >
              Cancel
             </Button>
-            <Button onClick={handleDelete} variant="danger" style={{marginLeft: "5px"}}>
-             Delete
+            <Button 
+              variant="danger"
+              style={{marginLeft: "5px"}}
+              onClick={handleConfirmDelete} 
+            >
+              Delete
             </Button>
         </div>
     </Alert>
-
   </Modal>
-
-
 </>
 );
 };
