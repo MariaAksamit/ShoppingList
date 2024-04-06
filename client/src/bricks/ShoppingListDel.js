@@ -73,7 +73,9 @@ return (
         variant="primary"
         style={{ marginLeft: "8px" }}
         onClick={() => {
-            archiving({ ...detail, archived: true }); 
+            archiving({ ...detail, archived: true });
+            handleCloseModal(); 
+            navigate("/overview")
         }}
         >
         Archive

@@ -39,7 +39,7 @@ export default function ShoppingList ({ handleShowModal }) {
     if (isModalShown) handleOpenModal();
     }, [isModalShown]);     
 
-    const handleCreateList = async (e) => {
+  const handleCreateList = async (e) => {
       try {
         e.preventDefault();
         e.stopPropagation();

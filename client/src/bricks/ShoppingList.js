@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Button, Table, Row, Col, Form, Accordion, Dropdown, DropdownButton } from "react-bootstrap";
+import { Alert, Button, Table, Row, Col, Form, Accordion, Dropdown, DropdownButton } from "react-bootstrap";
 import Icon from "@mdi/react";
 import { mdiTrashCanOutline } from "@mdi/js";
 import { useNavigate } from "react-router-dom"
@@ -12,8 +12,12 @@ import UserContext from "../Provider";
 export default function ShoppingList ({ detail, lists, ownerName, members }) {
   const navigate = useNavigate();
   const {user, users, canEdit} = useContext(UserContext);
+  const [listCall, setListCall] = useState({ state: "pending" });
+  const [showAlert, setShowAlert] = useState(false);
   const [isModalShown, setShow] = useState(false);
+  const [titleError, setTitleError] = useState(null);
   const [isDeleteModalShown, setDeleteModalShown] = useState(false);
+
   const [showAllItems, setShowAllItems] = useState(true);
 
   const initialItems = detail
@@ -28,6 +32,7 @@ export default function ShoppingList ({ detail, lists, ownerName, members }) {
     title: detail ? detail.title : "",
     members: members,
     items: initialItems,
+    archived: detail ? detail.archived : false
     });
 
   const handleShowModal = () => {
@@ -83,16 +88,50 @@ export default function ShoppingList ({ detail, lists, ownerName, members }) {
     }));
   };
 
-  const handleEditItem = (itemName, updatedValues) => {
-    setFormData(prevFormData => ({
-      ...prevFormData,
-      items: prevFormData.items.map(item => {
-        if (item.item === itemName) {
-          return { ...item, ...updatedValues };
-        }
-        return item;
-      }),
-    }));
+  const handleEditList = async (e) => {
+    try {
+      e.preventDefault();
+      e.stopPropagation();
+        
+      setTitleError(null);
+  
+      if (formData.title.length < 3 || formData.title.length > 50) {
+        setTitleError("The title must be 3 - 50 characters long.");
+        return;
+      };
+  
+      if (formData.items.length === 0) {
+        setShowAlert(true);
+        return;
+      };
+
+    const updatedList = {
+      id: detail.id,
+      title: formData.title,
+      owner: user.id,
+      members: formData.members,
+      items: formData.items,
+      archived: formData.archived
+    };
+          
+    const response = await fetch("http://127.0.0.1:8000/shoppingList/update", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedList),
+    });
+      
+    if (response.ok) {
+      navigate(`/overview`);
+    } else {
+      const errorData = await response.json();
+      setListCall({ state: "error", error: errorData });
+    }
+    } catch (error) {
+      setListCall({ state: "error", error: error.message });
+    } finally {
+    }
   };
   
   const toggleShowAllItems = () => {
@@ -127,15 +166,9 @@ export default function ShoppingList ({ detail, lists, ownerName, members }) {
     navigate(`/overview`);
   };
 
-  const archiving =  (updArchive) => {
-    const updatedLists = lists.map(list => {
-      if (list.id === updArchive.id) {
-        return updArchive; // Ak sa zhoduje ID, aktualizujeme nákupný zoznam
-      } else {
-        return list; // Inak ponecháme nákupný zoznam nezmenený
-      }
-    });
-    };
+  const archiving =  () => {
+      return formData.archived= true 
+  };
 
 return (
   <>
@@ -300,6 +333,7 @@ return (
     <div className="formDetailButton">
       <Button 
         variant="success"
+        onClick={handleEditList}
       >
           Save
       </Button>
@@ -334,6 +368,25 @@ return (
     )}
   </div>
   </div>
+  <Alert
+    show={showAlert}
+    variant="warning" 
+    onClose={() => setShowAlert(false)}
+    dismissible
+  >
+    <p> The list contains no items. Add at least one. </p>
+    <hr />
+    <div className="d-flex justify-content-end">
+      <Button 
+        onClick={() => {
+        setShowAlert(false);
+        }} 
+        variant="outline-danger"
+      >
+        Cancel
+      </Button>
+    </div>
+  </Alert> 
   </>
 );
 };

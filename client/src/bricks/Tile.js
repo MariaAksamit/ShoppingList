@@ -29,7 +29,7 @@ function Tile ({ detail, lists }) {
         return list; // Inak ponecháme nákupný zoznam nezmenený
       }
     });
-    };
+  };
 
 return (
   <div className="tile">
