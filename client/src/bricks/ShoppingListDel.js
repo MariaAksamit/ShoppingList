@@ -75,7 +75,6 @@ return (
         onClick={() => {
             archiving({ ...detail, archived: true });
             handleCloseModal(); 
-            navigate("/overview")
         }}
         >
         Archive

@@ -145,7 +145,7 @@ export default function ShoppingList ({ handleShowModal }) {
   const addMember = (newMember) => {
     setFormData((prevFormData) => ({
       ...prevFormData,
-      members: [...prevFormData.members, newMember]
+      members: [...prevFormData.members, newMember.id]
     }))
   };
 
@@ -196,7 +196,9 @@ return (
         <Accordion.Header>Members</Accordion.Header>
         <Accordion.Body>
           <div>
-            {formData.members.map((member) => (
+            {formData.members.map((memberId) => {
+              const member = users.find(user => user.id === memberId);
+              return (
               <div key={member.id}>
                 <Icon
                     path={mdiTrashCanOutline}
@@ -207,14 +209,15 @@ return (
                   {" "}
                 {member.name}
               </div>
-            ))}    
+            );
+          })}    
           </div>
           <Row>
             <Col className="text-end">
                 <DropdownButton size="sm" title="Add member" variant="outline-primary">
                 {users
                   .filter(us => ((us.id !== 0) && (us.id !== user.id)))
-                  .filter((user) => !formData.members.some((member) => member.id === user.id))
+                  .filter((user) => !formData.members.includes(user.id))
                   .sort((a, b) => a.name.localeCompare(b.name))
                   .map((user) => (
                     <Dropdown.Item key={user.id} onClick={() => addMember(user)}>

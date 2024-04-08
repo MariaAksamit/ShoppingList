@@ -17,7 +17,6 @@ export default function ShoppingList ({ detail, lists, ownerName, members }) {
   const [isModalShown, setShow] = useState(false);
   const [titleError, setTitleError] = useState(null);
   const [isDeleteModalShown, setDeleteModalShown] = useState(false);
-
   const [showAllItems, setShowAllItems] = useState(true);
 
   const initialItems = detail
@@ -30,13 +29,59 @@ export default function ShoppingList ({ detail, lists, ownerName, members }) {
 
   const [formData, setFormData] = useState({
     title: detail ? detail.title : "",
-    members: members,
+    members: detail ? detail.members : [],
     items: initialItems,
     archived: detail ? detail.archived : false
     });
 
   const handleShowModal = () => {
     setShow(true);
+  };
+ 
+  const handleEditList = async (e) => {
+    try {
+      e.preventDefault();
+      e.stopPropagation();
+        
+      setTitleError(null);
+  
+      if (formData.title.length < 3 || formData.title.length > 50) {
+        setTitleError("The title must be 3 - 50 characters long.");
+        return;
+      };
+  
+      if (formData.items.length === 0) {
+        setShowAlert(true);
+        return;
+      };
+
+    const updatedList = {
+      id: detail.id,
+      title: formData.title,
+      owner: user.id,
+      members: formData.members,
+      items: formData.items,
+      archived: formData.archived
+    };
+          
+    const response = await fetch("http://127.0.0.1:8000/shoppingList/update", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedList),
+    });
+      
+    if (response.ok) {
+      navigate(`/overview`);
+    } else {
+      const errorData = await response.json();
+      setListCall({ state: "error", error: errorData });
+    }
+    } catch (error) {
+      setListCall({ state: "error", error: error.message });
+    } finally {
+    }
   };
 
   const setField = (name, val) => {
@@ -86,54 +131,9 @@ export default function ShoppingList ({ detail, lists, ownerName, members }) {
       ...prevFormData,
       items: [...prevFormData.items, newItem],
     }));
+    console.log(newItem);
   };
 
-  const handleEditList = async (e) => {
-    try {
-      e.preventDefault();
-      e.stopPropagation();
-        
-      setTitleError(null);
-  
-      if (formData.title.length < 3 || formData.title.length > 50) {
-        setTitleError("The title must be 3 - 50 characters long.");
-        return;
-      };
-  
-      if (formData.items.length === 0) {
-        setShowAlert(true);
-        return;
-      };
-
-    const updatedList = {
-      id: detail.id,
-      title: formData.title,
-      owner: user.id,
-      members: formData.members,
-      items: formData.items,
-      archived: formData.archived
-    };
-          
-    const response = await fetch("http://127.0.0.1:8000/shoppingList/update", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updatedList),
-    });
-      
-    if (response.ok) {
-      navigate(`/overview`);
-    } else {
-      const errorData = await response.json();
-      setListCall({ state: "error", error: errorData });
-    }
-    } catch (error) {
-      setListCall({ state: "error", error: error.message });
-    } finally {
-    }
-  };
-  
   const toggleShowAllItems = () => {
     setShowAllItems((prevShowAllItems) => !prevShowAllItems);
   };
@@ -142,23 +142,20 @@ export default function ShoppingList ({ detail, lists, ownerName, members }) {
   ? formData.items
   : formData.items.filter((item) => !item.state);
 
-  const handleDeleteMember = (memberName) => {
-    const member = users.find(member => member.name === memberName);
-    const memberId = member ? member.id : null;
-
+  const handleDeleteMember = (memberId) => {
+    console.log("stav members pred: ", formData.members)
     setFormData(formData => ({
       ...formData,
-      members: formData.members.filter(member => member !== memberName),
+      members: formData.members.filter(member => member !== memberId),
     }));
-    
-    if (memberId === user.id) navigate(`/`);  
-    
+    console.log("stav members po: ", formData.members)
+
   };
 
-  const addMember = (newMember) => {
+  const addMember = (newMemberId) => {
     setFormData((prevFormData) => ({
       ...prevFormData,
-      members: [...prevFormData.members, newMember]
+      members: [...prevFormData.members, newMemberId]
     }))
   };
 
@@ -167,7 +164,8 @@ export default function ShoppingList ({ detail, lists, ownerName, members }) {
   };
 
   const archiving =  () => {
-      return formData.archived= true 
+        formData.archived = true;
+        handleEditList();
   };
 
 return (
@@ -211,30 +209,34 @@ return (
         <Accordion.Header>Members</Accordion.Header>
         <Accordion.Body>
           <div>
-            {formData.members.map((member) => (
-              <div>
+            {formData.members.map((memberId) => {
+              const member = users.find(user => user.id === memberId);
+              return (
+              <div key={member.id}>
                {canEdit(detail.owner) && (
                 <Icon
                     path={mdiTrashCanOutline}
                     style={{ cursor: 'pointer', color: 'grey' }}
                     size={0.8}
-                    onClick={() => handleDeleteMember(member)}
+                    onClick={() => handleDeleteMember(member.id)}
                   />
                 )}
                   {" "}
-                {member}
+                {member.name}
               </div>
-            ))}       
+              );
+            })}       
           </div>
           <Row>
             <Col className="text-end">
               {canEdit(detail.owner) &&
                 <DropdownButton size="sm" title="Add member" variant="outline-primary">
                 {users
-                  .filter((user) => !formData.members.some((member) => member.id === user.id))
-                  .filter((user) => user.id !== detail.owner.id)
+                  .filter(us => ((us.id !== 0) && (us.id !== user.id)))
+                  .filter((user) => !formData.members.includes(user.id))
+                  .sort((a, b) => a.name.localeCompare(b.name))
                   .map((user) => (
-                    <Dropdown.Item key={user.id} onClick={() => addMember(user)}>
+                    <Dropdown.Item key={user.id} onClick={() => addMember(user.id)}>
                       {user.name}
                     </Dropdown.Item>
                   ))}
@@ -248,8 +250,8 @@ return (
                 <Button
                   variant="outline-danger"
                   onClick={() => {
-                    handleDeleteMember(user.name);
-                    handleBack();
+                    handleDeleteMember(user.id);
+                    handleEditList();
                   }}
                 >
                   Leave
