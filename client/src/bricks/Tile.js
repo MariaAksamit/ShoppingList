@@ -24,9 +24,9 @@ function Tile ({ detail, lists }) {
   const archiving =  (updArchive) => {
     const updatedLists = lists.map(list => {
       if (list.id === updArchive.id) {
-        return updArchive; // Ak sa zhoduje ID, aktualizujeme nákupný zoznam
+        return updArchive;
       } else {
-        return list; // Inak ponecháme nákupný zoznam nezmenený
+        return list;
       }
     });
   };
@@ -37,22 +37,7 @@ return (
    {detail.archived && (
       <div style={{color: "red", fontSize: "80%"}}>List is archived.</div>
     )}
-  {canEdit(detail.owner) &&
-    <div>
-      <ShoppingListDel
-        detail={detail}
-        archiving={archiving}
-        onClose={() => setDeleteModalShown(false)}
-        isDeleteModalShown={isDeleteModalShown}
-      />
-    <Icon
-      path={mdiTrashCanOutline}
-      style={{ cursor: 'pointer', color: 'grey' }}
-      size={0.8}
-      onClick={() => {setDeleteModalShown(true)}}
-    />
-    </div>
-    }
+  
     <Card.Body>
         <strong> {detail.title} </strong> <br /> <br />
       <div style={{textAlign: "left"}}>
@@ -60,26 +45,49 @@ return (
         <div>
         <br />
         <u>Members:</u>
-        <div>{members.join(", ")}</div>
-
-        <br />
+        <div>
+          {members.slice(0, 3).join(", ")} {members.length > 3 && '...'}
+        </div>
+          <br />
         <u>Items:</u>
         <ul className="item-list">
         {detail.items
             .filter((item) => item.state === false)
-            .map((item) => (
-            <li>{item.item}</li>
+            .slice(0, 3)
+            .map((item, index) => (
+            <li key={index}>{item.item}</li>
         ))}
+        {detail.items.filter((item) => item.state === false).length > 3 && (
+        <li key="more">...</li>
+        )}
         </ul>
         </div>
       </div>
       <br />
-      <Button 
+      <div style={{ position: 'absolute', bottom: '20px', left: '50%', transform: 'translateX(-50%)' }}>
+    <Button 
         variant="primary"
         onClick={handleTileClick}
-      >
+    >
         Detail
-      </Button>
+    </Button>
+    </div>
+    {canEdit(detail.owner) && (
+        <div style={{ position: 'absolute', bottom: '20px', left: '20px' }}>
+            <ShoppingListDel
+                detail={detail}
+                archiving={archiving}
+                onClose={() => setDeleteModalShown(false)}
+                isDeleteModalShown={isDeleteModalShown}
+            />
+            <Icon
+                path={mdiTrashCanOutline}
+                style={{ cursor: 'pointer', color: 'grey' }}a
+                size={0.8}
+                onClick={() => {setDeleteModalShown(true)}}
+            />
+        </div>
+    )}
     </Card.Body>
   </Card>
   </div>
