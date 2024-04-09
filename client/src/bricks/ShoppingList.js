@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Alert, Button, Table, Row, Col, Form, Accordion, Dropdown, DropdownButton } from "react-bootstrap";
 import Icon from "@mdi/react";
 import { mdiTrashCanOutline } from "@mdi/js";
@@ -16,6 +16,7 @@ export default function ShoppingList ({ detail, lists, ownerName, members }) {
   const [showAlert, setShowAlert] = useState(false);
   const [isModalShown, setShow] = useState(false);
   const [titleError, setTitleError] = useState(null);
+  const [itemsError, setItemsError] = useState(null);
   const [isDeleteModalShown, setDeleteModalShown] = useState(false);
   const [showAllItems, setShowAllItems] = useState(true);
 
@@ -34,19 +35,43 @@ export default function ShoppingList ({ detail, lists, ownerName, members }) {
     archived: detail ? detail.archived : false
     });
 
+    useEffect(() => {
+      if (!(user.id === detail.owner || formData.members.includes(user.id))) {
+        handleBack();
+      }
+    }, [user.id, detail.owner, members]);
+  
+
   const handleShowModal = () => {
     setShow(true);
   };
  
+  const validateItems = () => {
+    const errors = [];
+    formData.items.forEach((item, index) => {
+      if (item.item.length < 2 || item.item.length > 50 || item.amount.length < 2 || item.amount.length > 50) {
+        errors[index] =("Item name and amount must be  2 - 50 characters long.");
+      }
+    });
+    return errors;
+  };
+
   const handleEditList = async (e) => {
     try {
       e.preventDefault();
       e.stopPropagation();
         
       setTitleError(null);
+      setItemsError(null);
   
       if (formData.title.length < 3 || formData.title.length > 50) {
         setTitleError("The title must be 3 - 50 characters long.");
+        return;
+      };
+
+      const itemErrors = validateItems();
+        if (Object.keys(itemErrors).length > 0) {
+        setItemsError(itemErrors);
         return;
       };
   
@@ -131,7 +156,6 @@ export default function ShoppingList ({ detail, lists, ownerName, members }) {
       ...prevFormData,
       items: [...prevFormData.items, newItem],
     }));
-    console.log(newItem);
   };
 
   const toggleShowAllItems = () => {
@@ -142,7 +166,7 @@ export default function ShoppingList ({ detail, lists, ownerName, members }) {
   ? formData.items
   : formData.items.filter((item) => !item.state);
 
-  const handleDeleteMember = (memberId) => {
+  const deleteMember = (memberId) => {
     console.log("stav members pred: ", formData.members)
     setFormData(formData => ({
       ...formData,
@@ -185,8 +209,11 @@ return (
         minLength={3}
         maxLength={50}
         onChange={(e) => {setField("title", e.target.value)}}
-        disabled={!canEdit()}                      
+        disabled={!canEdit(detail.owner)}                      
       />}
+      {titleError && (
+        <Form.Text className="text-danger"> {titleError} </Form.Text>
+        )}
       {!canEdit(detail.owner) && (
         <Form.Control
           plaintext
@@ -218,7 +245,7 @@ return (
                     path={mdiTrashCanOutline}
                     style={{ cursor: 'pointer', color: 'grey' }}
                     size={0.8}
-                    onClick={() => handleDeleteMember(member.id)}
+                    onClick={() => deleteMember(member.id)}
                   />
                 )}
                   {" "}
@@ -250,7 +277,7 @@ return (
                 <Button
                   variant="outline-danger"
                   onClick={() => {
-                    handleDeleteMember(user.id);
+                    deleteMember(user.id);
                     handleEditList();
                   }}
                 >
@@ -296,18 +323,27 @@ return (
                   <Form.Control 
                     type="text"
                     value={cellValues.item}
-                    onChange={(e) => {setTable(entry.item, { ...cellValues, item: e.target.value })}}                           
+                    onChange={(e) => {setTable(entry.item, { ...cellValues, item: e.target.value })}}  
+                    minLength={2}
+                    maxLength={50}                         
                     required 
-                  > 
-                  </Form.Control>
+                  /> 
+                  {itemsError && itemsError[index] && (
+                    <Form.Text className="text-danger"> {itemsError[index]} </Form.Text>
+                  )}
                 </td>
                 <td>
                   <Form.Control 
                     type="text" 
                     value={cellValues.amount}
                     onChange={(e) => {setTable(entry.item, { ...cellValues, amount: e.target.value })}}
+                    minLength={2}
+                    maxLength={50}
                     required 
                   /> 
+                  {itemsError && itemsError[index] && (
+                    <Form.Text className="text-danger"> {itemsError[index]} </Form.Text>
+                  )}
                 </td>
                 <td>
                   <Form.Check

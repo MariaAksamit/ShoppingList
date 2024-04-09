@@ -12,6 +12,7 @@ export default function ShoppingList ({ handleShowModal }) {
   const [isModalShown, setShow] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [titleError, setTitleError] = useState(null);
+  const [itemsError, setItemsError] = useState(null);
   const [listCall, setListCall] = useState({ state: "pending" });
   const [formData, setFormData] = useState({
     title: "",
@@ -39,6 +40,16 @@ export default function ShoppingList ({ handleShowModal }) {
     if (isModalShown) handleOpenModal();
     }, [isModalShown]);     
 
+  const validateItems = () => {
+    const errors = [];
+      formData.items.forEach((item, index) => {
+        if (item.item.length < 2 || item.item.length > 50 || item.amount.length < 2 || item.amount.length > 50) {
+          errors.push("Item name and amount must be  2 - 50 characters long.");
+        }
+      });
+      return errors;
+  };
+
   const handleCreateList = async (e) => {
       try {
         e.preventDefault();
@@ -46,12 +57,19 @@ export default function ShoppingList ({ handleShowModal }) {
                      
         // Resetujte chyby pred každým overením
         setTitleError(null);
+        setItemsError(null);
   
         if (formData.title.length < 3 || formData.title.length > 50) {
           setTitleError("The title must be 3 - 50 characters long.");
           return;
         };
   
+        const itemErrors = validateItems();
+          if (Object.keys(itemErrors).length > 0) {
+          setItemsError(itemErrors);
+          return;
+        };
+
         if (formData.items.length === 0) {
           setShowAlert(true);
           return;
@@ -257,17 +275,26 @@ return (
                     type="text"
                     value={cellValues.item}
                     onChange={(e) => {setTable(entry.item, { ...cellValues, item: e.target.value })}}                           
+                    minLength={2}
+                    maxLength={50}   
                     required 
-                  > 
-                  </Form.Control>
+                  /> 
+                  {itemsError && itemsError[index] && (
+                    <Form.Text className="text-danger"> {itemsError[index]} </Form.Text>
+                  )}
                 </td>
                 <td>
                   <Form.Control 
                     type="text" 
                     value={cellValues.amount}
                     onChange={(e) => {setTable(entry.item, { ...cellValues, amount: e.target.value })}}
+                    minLength={2}
+                    maxLength={50}   
                     required 
                   /> 
+                  {itemsError && itemsError[index] && (
+                    <Form.Text className="text-danger"> {itemsError[index]} </Form.Text>
+                  )}
                 </td>
                 <td>
                   <Icon
