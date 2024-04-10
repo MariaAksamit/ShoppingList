@@ -24,7 +24,7 @@ export default function ShoppingList ({ detail, lists, ownerName, members }) {
     ? detail.items.map(entry => ({
       item: entry.item || "",
       amount: entry.amount || "",
-      state: entry.state || "",
+      state: entry.state !== undefined ? entry.state : false,
     }))
     : [];
 
