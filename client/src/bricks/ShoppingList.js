@@ -28,6 +28,7 @@ export default function ShoppingList ({ detail, lists, ownerName, members }) {
     }))
     : [];
 
+    
   const [formData, setFormData] = useState({
     title: detail ? detail.title : "",
     members: detail ? detail.members : [],
@@ -57,6 +58,7 @@ export default function ShoppingList ({ detail, lists, ownerName, members }) {
   };
 
   const handleEditList = async (e) => {
+
     try {
       e.preventDefault();
       e.stopPropagation();
@@ -83,7 +85,7 @@ export default function ShoppingList ({ detail, lists, ownerName, members }) {
     const updatedList = {
       id: detail.id,
       title: formData.title,
-      owner: user.id,
+      owner: detail.owner,
       members: formData.members,
       items: formData.items,
       archived: formData.archived
@@ -120,6 +122,7 @@ export default function ShoppingList ({ detail, lists, ownerName, members }) {
       return {
         item: entry?.item || "",
         amount: entry?.amount || "",
+        state: entry?.state || false,
       };
     };
     
@@ -131,7 +134,7 @@ export default function ShoppingList ({ detail, lists, ownerName, members }) {
             ...entry,
             item: updatedValues.item,
             amount: updatedValues.amount,
-            state: updatedValues.state || false,
+            state: updatedValues.state,
           };
         }
           return entry;
@@ -191,6 +194,9 @@ export default function ShoppingList ({ detail, lists, ownerName, members }) {
         formData.archived = true;
         handleEditList();
   };
+
+  console.log("initialItems: ", initialItems);
+  console.log("detail.items: ", detail.items);
 
 return (
   <>
@@ -348,7 +354,7 @@ return (
                 <td>
                   <Form.Check
                     type="checkbox"
-                    checked={entry.state || false} 
+                    checked={entry.state} 
                     onChange={(e) => setTable(entry.item, { ...cellValues, state: e.target.checked })}
                   />
                 </td>
