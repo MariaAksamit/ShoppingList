@@ -28,7 +28,7 @@ class ListDao {
   }
 
   async getList(id) {
-    let list = await this._loadAllListss();
+    let list = await this._loadAllLists();
     const result = list.find((b) => b.id === id);
     return result;
   }
@@ -69,18 +69,18 @@ class ListDao {
   }
 
   async listLists() {
-    let listLists = await this._loadAllLists();
-    return listLists;
+    let listList = await this._loadAllLists();
+    return listList;
   }
 
   async _loadAllLists() {
-    let listLists;
+    let listList;
     try {
-      listLists = JSON.parse(await rf(this._getStorageLocation()));
+      listList = JSON.parse(await rf(this._getStorageLocation()));
     } catch (e) {
       if (e.code === "ENOENT") {
         console.info("No storage found, initializing new one...");
-        listLists = [];
+        listList = [];
       } else {
         throw new Error(
           "Unable to read from storage. Wrong data format. " +
@@ -88,7 +88,7 @@ class ListDao {
         );
       }
     }
-    return listLists;
+    return listList;
   }
 
   _getStorageLocation() {

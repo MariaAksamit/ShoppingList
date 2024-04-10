@@ -23,7 +23,7 @@ async function DeleteAbl(req, res) {
       res.json({});
     } else {
       res.status(400).send({
-        errorMessage: "Validation of input failed.",
+        errorMessage: "validation of input failed.",
         params: req.body,
         reason: ajv.errors,
       });

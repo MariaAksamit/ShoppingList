@@ -25,12 +25,12 @@ async function GetAbl(req, res) {
       if (!list) {
         res
           .status(400)
-          .send({ error: `List with id '${listId}' doesn't exist.` });
+          .send({ error: `list with id '${listId}' doesn't exist.` });
       }
       res.json(list);
     } else {
       res.status(400).send({
-        errorMessage: "Validation of input failed.",
+        errorMessage: "validation of input failed.",
         params: body,
         reason: ajv.errors,
       });

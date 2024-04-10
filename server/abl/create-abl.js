@@ -8,7 +8,7 @@ let dao = new ListDao(
 let schema = {
   type: "object",
   properties: {
-    title: { type: "string" },
+    title: { type: "string", minLength: 3, maxLength: 50 },
     owner: { type: "string" },
     members: {
       type: "array",
@@ -22,17 +22,17 @@ let schema = {
         {
           type: "object",
           properties: {
-            item: { type: "string" },
-            amount: { type: "string" },
-            state: { type: "boolean" },
+            item: { type: "string", minLength: 2, maxLength: 50 },
+            amount: { type: "string", default: "" },
+            state: { type: "boolean", default: false },
           },
          required: ["item"],
         }
       ]
     },
-    archived: "boolean" 
+    archived: { type: "boolean", default: false } 
   },
-  required: ["title"],
+  required: ["title", "owner", "items"],
 };
 
 async function CreateAbl(req, res) {

@@ -9,7 +9,7 @@ let schema = {
   type: "object",
   properties: {
     id: { type: "string" },
-    title: { type: "string" },
+    title: { type: "string", minLength: 3, maxLength: 50 },
     owner: { type: "string" },
     members: {
         type: "array",
@@ -18,27 +18,29 @@ let schema = {
       },
     items: {
         type: "array",
-        minItems: 0,
+        minItems: 1,
         items: [
           {
             type: "object",
             properties: {
-              item: { type: "string" },
-              amount: { type: "string" },
-              state: { type: "boolean" },
+              item: { type: "string", minLength: 2, maxLength: 50 },
+              amount: { type: "string", default: "" },
+              state: { type: "boolean", default: false },
             },
-            //required: ["item"],
+            required: ["item"],
           }
         ]
       },
-    archived: "boolean"
+    archived: { type: "boolean", default: false }
   },
-  required: ["id"],
+  required: ["id", "title", "owner", "items"],
 };
 
 async function UpdateAbl(req, res) {
   try {
     const ajv = new Ajv();
+        console.log("Request body:", req.body);
+
     let list = req.body;
     const valid = true;
     if (valid) {
