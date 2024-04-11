@@ -42,7 +42,7 @@ async function UpdateAbl(req, res) {
         console.log("Request body:", req.body);
 
     let list = req.body;
-    const valid = true;
+    const valid = ajv.validate(schema, req.body);
     if (valid) {
       list = await dao.updateList(list);
       res.json(list);
