@@ -9,6 +9,7 @@ let schema = {
   type: "object",
   properties: {
     id: { type: "string" },
+    owner: { type: "string" }
   },
   required: ["id"],
 };
@@ -19,8 +20,16 @@ async function DeleteAbl(req, res) {
   try {
     if (valid) {
       const listId = req.body.id;
-      await dao.deleteList(listId);
-      res.json({});
+      const userId = req.body.userId;
+      const list = await dao.getList(listId);
+      if (list.owner === userId) {
+        await dao.deleteList(listId);
+        res.json({});
+      } else {
+        res.status(403).send({
+          errorMessage: "Permission denied. Only the owner can delete this shopping list.",
+        });
+      }
     } else {
       res.status(400).send({
         errorMessage: "validation of input failed.",

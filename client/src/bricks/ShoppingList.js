@@ -27,8 +27,7 @@ export default function ShoppingList ({ detail, lists, ownerName, members }) {
       state: entry.state !== undefined ? entry.state : false,
     }))
     : [];
-
-    
+ 
   const [formData, setFormData] = useState({
     title: detail ? detail.title : "",
     members: detail ? detail.members : [],

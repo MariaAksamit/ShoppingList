@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Modal, Button, Alert } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
+import UserContext from "../Provider";
+
 import styles from "../styles/styles.css";
 
 export default function ShoppingListDel ({ detail, archiving, onClose, isDeleteModalShown }) {
   const navigate = useNavigate();
+  const {user} = useContext(UserContext);
   const [showAlert, setShowAlert] = useState(false);
   const [isModalShown, setShow] = useState(false);
 
@@ -22,12 +25,18 @@ export default function ShoppingListDel ({ detail, archiving, onClose, isDeleteM
 const handleDelete = async () => {
   try {
     console.log("Deleting list:", detail);
+
+    const requestData = {
+      id: detail.id,
+      userId: user.id
+    };
+
     const response = await fetch("http://127.0.0.1:8000/shoppingList/delete", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ id: detail.id }),
+      body: JSON.stringify(requestData),
     });
 
     if (response.ok) {
