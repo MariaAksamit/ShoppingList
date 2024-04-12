@@ -13,8 +13,8 @@ let schema = {
     owner: { type: "string" },
     members: {
         type: "array",
-        minMembers: 0,
-        members: []
+        minItems: 0,
+        items: {type: "string"}
       },
     items: {
         type: "array",

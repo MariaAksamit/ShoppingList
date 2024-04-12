@@ -7,7 +7,6 @@ import styles from "../styles/styles.css";
 export default function AddItem ({ addItem, handleShowModal }) {
   const [isModalShown, setShow] = useState(false);
   const [itemError, setItemError] = useState(null);
-  const [amountError, setAmountError] = useState(null);
   const [formData, setFormData] = useState({
     item: "",
     amount: "",
@@ -40,15 +39,9 @@ export default function AddItem ({ addItem, handleShowModal }) {
   const handleSaveItem = () => {
     
     setItemError(null);
-    setAmountError(null);
 
-    if (formData.item.length < 3 || formData.item.length > 50) {
-      setItemError("The item name must be 3 - 50 characters long.");
-      return;
-    };
-
-    if (formData.amount.length < 3 || formData.amount.length > 50) {
-      setAmountError("The amount must be 3 - 50 characters long.");
+    if (formData.item.length < 2 || formData.item.length > 50) {
+      setItemError("The item name must be 2 - 50 characters long.");
       return;
     };
 
@@ -87,7 +80,7 @@ return (
         <Form.Control
           type="text"
           value={formData.item}
-          minLength={3}
+          minLength={2}
           maxLength={50}
           onChange={(e) => setField("item", e.target.value)}
           required
@@ -102,14 +95,9 @@ return (
         <Form.Control 
           type="text" 
           value={formData.amount}
-          minLength={3}
-          maxLength={50}
           onChange={(e) => setField("amount", e.target.value)}
-          required
+          maxLength={50} 
         /> 
-        {amountError && (
-        <Form.Text className="text-danger"> {amountError} </Form.Text>
-        )}
       </Form.Group>
     </Modal.Body>
         

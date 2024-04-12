@@ -9,7 +9,6 @@ let schema = {
   type: "object",
   properties: {
     id: { type: "string" },
-    owner: { type: "string" }
   },
   required: ["id"],
 };

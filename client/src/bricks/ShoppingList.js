@@ -27,7 +27,7 @@ export default function ShoppingList ({ detail, lists, ownerName, members }) {
       state: entry.state !== undefined ? entry.state : false,
     }))
     : [];
- 
+   
   const [formData, setFormData] = useState({
     title: detail ? detail.title : "",
     members: detail ? detail.members : [],
@@ -35,11 +35,11 @@ export default function ShoppingList ({ detail, lists, ownerName, members }) {
     archived: detail ? detail.archived : false
     });
 
-    useEffect(() => {
-      if (!(user.id === detail.owner || formData.members.includes(user.id))) {
-        handleBack();
-      }
-    }, [user.id, detail.owner, members]);
+  useEffect(() => {
+    if (!(user.id === detail.owner || formData.members.includes(user.id))) {
+      handleBack();
+    }
+  }, [user.id, detail.owner, members]);
   
 
   const handleShowModal = () => {
@@ -49,8 +49,8 @@ export default function ShoppingList ({ detail, lists, ownerName, members }) {
   const validateItems = () => {
     const errors = [];
     formData.items.forEach((item, index) => {
-      if (item.item.length < 2 || item.item.length > 50 || item.amount.length < 2 || item.amount.length > 50) {
-        errors[index] =("Item name and amount must be  2 - 50 characters long.");
+      if (item.item.length < 2 || item.item.length > 50 || item.amount.length > 50) {
+        errors[index] =("Item name must be  2 - 50 and amount max 50 characters long.");
       }
     });
     return errors;
@@ -169,13 +169,10 @@ export default function ShoppingList ({ detail, lists, ownerName, members }) {
   : formData.items.filter((item) => !item.state);
 
   const deleteMember = (memberId) => {
-    console.log("stav members pred: ", formData.members)
     setFormData(formData => ({
       ...formData,
       members: formData.members.filter(member => member !== memberId),
     }));
-    console.log("stav members po: ", formData.members)
-
   };
 
   const addMember = (newMemberId) => {
@@ -194,9 +191,6 @@ export default function ShoppingList ({ detail, lists, ownerName, members }) {
         handleEditList();
   };
 
-  console.log("initialItems: ", initialItems);
-  console.log("detail.items: ", detail.items);
-
 return (
   <>
 
@@ -204,7 +198,7 @@ return (
       <div>
   <Form>
       <Form.Group as={Row} className="mb-3">
-      <Form.Label column sm="2">Shopping List:</Form.Label>
+      <Form.Label column sm="2">Shopping List</Form.Label>
       <Col sm="10">
       {canEdit(detail.owner) &&
       <Form.Control
@@ -342,9 +336,7 @@ return (
                     type="text" 
                     value={cellValues.amount}
                     onChange={(e) => {setTable(entry.item, { ...cellValues, amount: e.target.value })}}
-                    minLength={2}
-                    maxLength={50}
-                    required 
+                    maxLength={50} 
                   /> 
                   {itemsError && itemsError[index] && (
                     <Form.Text className="text-danger"> {itemsError[index]} </Form.Text>
@@ -406,7 +398,7 @@ return (
         detail={detail}
         archiving={archiving}
         handleShowModal={handleShowModal}
-        onClose={() => setDeleteModalShown(false)} // Zatvorí modálne okno pre vymazanie
+        onClose={() => setDeleteModalShown(false)}
       />
     )}
   </div>

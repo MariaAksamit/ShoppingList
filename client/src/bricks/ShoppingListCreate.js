@@ -43,8 +43,8 @@ export default function ShoppingList ({ handleShowModal }) {
   const validateItems = () => {
     const errors = [];
       formData.items.forEach((item, index) => {
-        if (item.item.length < 2 || item.item.length > 50 || item.amount.length < 2 || item.amount.length > 50) {
-          errors.push("Item name and amount must be  2 - 50 characters long.");
+        if (item.item.length < 2 || item.item.length > 50 || item.amount.length > 50) {
+          errors.push("Item name must be  2 - 50 and amount max 50 characters long.");
         }
       });
       return errors;
@@ -153,10 +153,10 @@ export default function ShoppingList ({ handleShowModal }) {
     }));
   };
 
-  const handleDeleteMember = (memberId) => {
+  const deleteMember = (memberId) => {
     setFormData(formData => ({
       ...formData,
-      members: formData.members.filter(member => member.id !== memberId),
+      members: formData.members.filter(member => member !== memberId),
     }));
   };
 
@@ -181,7 +181,7 @@ return (
   <Modal show={isModalShown} onHide={handleCloseModal}>
     
     <Modal.Header closeButton>
-      <Modal.Title>Create new shopping list: </Modal.Title>
+      <Modal.Title>Create new shopping list</Modal.Title>
     </Modal.Header>
 
     <Modal.Body>
@@ -222,7 +222,7 @@ return (
                     path={mdiTrashCanOutline}
                     style={{ cursor: 'pointer', color: 'grey' }}
                     size={0.8}
-                    onClick={() => handleDeleteMember(member.id)}
+                    onClick={() => deleteMember(member.id)}
                   />
                   {" "}
                 {member.name}
@@ -288,9 +288,7 @@ return (
                     type="text" 
                     value={cellValues.amount}
                     onChange={(e) => {setTable(entry.item, { ...cellValues, amount: e.target.value })}}
-                    minLength={2}
-                    maxLength={50}   
-                    required 
+                    maxLength={50} 
                   /> 
                   {itemsError && itemsError[index] && (
                     <Form.Text className="text-danger"> {itemsError[index]} </Form.Text>
