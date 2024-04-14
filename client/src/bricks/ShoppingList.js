@@ -37,14 +37,13 @@ export default function ShoppingList ({ detail, lists, ownerName, members }) {
 
   useEffect(() => {
     if (!(user.id === detail.owner || formData.members.includes(user.id))) {
-      handleBack();
-    }
+        alert(`You are not authorized to view the shopping list "${detail.title}"`);
+        handleBack();    
+    }  
   }, [user.id, detail.owner, members]);
   
 
-  const handleShowModal = () => {
-    setShow(true);
-  };
+  const handleShowModal = () => setShow(true);
  
   const validateItems = () => {
     const errors = [];
@@ -186,9 +185,10 @@ export default function ShoppingList ({ detail, lists, ownerName, members }) {
     navigate(`/overview`);
   };
 
-  const archiving =  () => {
-        formData.archived = true;
-        handleEditList();
+  const archiving =  (archived) => {
+    const updatedFormData = archived;
+    setFormData(updatedFormData);
+    handleEditList();
   };
 
 return (
@@ -275,10 +275,7 @@ return (
               {!canEdit(detail.owner) && (
                 <Button
                   variant="outline-danger"
-                  onClick={() => {
-                    deleteMember(user.id);
-                    handleEditList();
-                  }}
+                  onClick={() => {deleteMember(user.id)}}
                 >
                   Leave
                 </Button>
@@ -413,15 +410,13 @@ return (
     <hr />
     <div className="d-flex justify-content-end">
       <Button 
-        onClick={() => {
-        setShowAlert(false);
-        }} 
+        onClick={() => setShowAlert(false)}
         variant="outline-danger"
       >
         Cancel
       </Button>
     </div>
-  </Alert> 
+  </Alert>
   </>
 );
 };

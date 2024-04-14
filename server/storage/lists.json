@@ -3,12 +3,7 @@
     "id": "9a100e1c",
     "title": "Nákup na víkend",
     "owner": "069d7e0f",
-    "members": [
-      "07c6d1e2",
-      "082b6d4a",
-      "099e3a8b",
-      "146f2e8b"
-    ],
+    "members": ["07c6d1e2", "082b6d4a", "099e3a8b", "146f2e8b"],
     "items": [
       {
         "item": "Mlieko",
@@ -21,23 +16,18 @@
         "state": false
       },
       {
-        "item": "Jablká111",
+        "item": "Jablká",
         "amount": "0,5 kg",
         "state": false
       }
     ],
-    "archived": false
+    "archived": true
   },
   {
     "id": "ce711d9e",
     "title": "Nákup na stretnutie temných lovcov",
     "owner": "114b1d9f",
-    "members": [
-      "069d7e0f",
-      "10e6f8c7",
-      "122f8c7a",
-      "13d4a7e5"
-    ],
+    "members": ["069d7e0f", "10e6f8c7", "122f8c7a", "13d4a7e5"],
     "items": [
       {
         "item": "Káva",
@@ -71,13 +61,7 @@
     "id": "ccb08dd7",
     "title": "Nákup na Vianoce",
     "owner": "012f5e1c",
-    "members": [
-      "07c6d1e2",
-      "10e6f8c7",
-      "13d4a7e5",
-      "155d7f9e",
-      "02743d9e"
-    ],
+    "members": ["07c6d1e2", "10e6f8c7", "13d4a7e5", "155d7f9e", "02743d9e"],
     "items": [
       {
         "item": "Vianočný stromček",
@@ -105,17 +89,13 @@
         "state": false
       }
     ],
-    "archived": false
+    "archived": true
   },
   {
     "id": "ee10bc9b",
     "title": "Posledná večera",
     "owner": "07c6d1e2",
-    "members": [
-      "069d7e0f",
-      "099e3a8b",
-      "146f2e8b"
-    ],
+    "members": ["069d7e0f", "099e3a8b", "146f2e8b"],
     "items": [
       {
         "item": "Kuracie stehná",
@@ -131,6 +111,16 @@
         "item": "Paprika",
         "amount": "500 g",
         "state": false
+      },
+      {
+        "item": "Víno",
+        "amount": "1 fľaša",
+        "state": false
+      },
+      {
+        "item": "Antrax",
+        "amount": "10 g",
+        "state": false
       }
     ],
     "archived": false
@@ -139,13 +129,7 @@
     "id": "aafa94a9",
     "title": "Upratovanie",
     "owner": "07c6d1e2",
-    "members": [
-      "069d7e0f",
-      "10e6f8c7",
-      "155d7f9e",
-      "114b1d9f",
-      "122f8c7a"
-    ],
+    "members": ["069d7e0f", "10e6f8c7", "155d7f9e", "114b1d9f", "122f8c7a"],
     "items": [
       {
         "item": "Bref",
@@ -174,12 +158,7 @@
     "id": "bb3c212f",
     "title": "Nákup na nový rok",
     "owner": "082b6d4a",
-    "members": [
-      "069d7e0f",
-      "07c6d1e2",
-      "10e6f8c7",
-      "114b1d9f"
-    ],
+    "members": ["069d7e0f", "07c6d1e2", "10e6f8c7", "114b1d9f"],
     "items": [
       {
         "item": "Šampanské",
@@ -218,13 +197,7 @@
     "id": "eb5a7f9e",
     "title": "Nákup na narodeniny",
     "owner": "07c6d1e2",
-    "members": [
-      "069d7e0f",
-      "07c6d1e2",
-      "114b1d9f",
-      "122f8c7a",
-      "099e3a8b"
-    ],
+    "members": ["069d7e0f", "07c6d1e2", "114b1d9f", "122f8c7a", "099e3a8b"],
     "items": [
       {
         "item": "Torta",
@@ -248,12 +221,7 @@
     "id": "bee9f8c7",
     "title": "Nákup na grilovačku",
     "owner": "122f8c7a",
-    "members": [
-      "069d7e0f",
-      "07c6d1e2",
-      "155d7f9e",
-      "114b1d9f"
-    ],
+    "members": ["069d7e0f", "07c6d1e2", "155d7f9e", "114b1d9f"],
     "items": [
       {
         "item": "Mäso",
@@ -271,18 +239,13 @@
         "state": false
       }
     ],
-    "archived": false
+    "archived": true
   },
   {
     "id": "a1f4b4e2",
     "title": "Nákup na piknik",
     "owner": "155d7f9e",
-    "members": [
-      "099e3a8b",
-      "146f2e8b",
-      "114b1d9f",
-      "069d7e0f"
-    ],
+    "members": ["099e3a8b", "146f2e8b", "114b1d9f", "069d7e0f"],
     "items": [
       {
         "item": "Párky",
@@ -306,12 +269,7 @@
     "id": "2d3f5c7a",
     "title": "Nákup na oslavu narodenín",
     "owner": "155d7f9e",
-    "members": [
-      "012f5e1c",
-      "02743d9e",
-      "07c6d1e2",
-      "05f7c4a9"
-    ],
+    "members": ["012f5e1c", "02743d9e", "07c6d1e2", "05f7c4a9"],
     "items": [
       {
         "item": "Tortový korpus",
@@ -335,12 +293,7 @@
     "id": "da6f1e8b",
     "title": "Nákup na výlet",
     "owner": "10e6f8c7",
-    "members": [
-      "069d7e0f",
-      "07c6d1e2",
-      "155d7f9e",
-      "122f8c7a"
-    ],
+    "members": ["069d7e0f", "07c6d1e2", "155d7f9e", "122f8c7a"],
     "items": [
       {
         "item": "Sendviče",
@@ -364,27 +317,22 @@
     "id": "009dae0f",
     "title": "Nákup na bojovú výpravu",
     "owner": "07c6d1e2",
-    "members": [
-      "082b6d4a",
-      "099e3a8b",
-      "05f7c4a9",
-      "114b1d9f"
-    ],
+    "members": ["082b6d4a", "099e3a8b", "05f7c4a9", "114b1d9f"],
     "items": [
       {
-        "item": "Meče2",
+        "item": "Meče",
         "amount": "10 ks",
         "state": false
       },
       {
         "item": "Nože",
         "amount": "50 ks",
-        "state": true
+        "state": false
       },
       {
         "item": "Laso",
         "amount": "7 ks",
-        "state": true
+        "state": false
       },
       {
         "item": "Stelé",
@@ -392,18 +340,13 @@
         "state": false
       }
     ],
-    "archived": false
+    "archived": true
   },
   {
     "id": "aec671e2",
     "title": "Nákup na piknik v Elfej doline",
     "owner": "122f8c7a",
-    "members": [
-      "069d7e0f",
-      "10e6f8c7",
-      "13d4a7e5",
-      "146f2e8b"
-    ],
+    "members": ["069d7e0f", "10e6f8c7", "13d4a7e5", "146f2e8b"],
     "items": [
       {
         "item": "Grilované klobásy",
@@ -427,12 +370,7 @@
     "id": "cd2a6d4a",
     "title": "Nákup na večierok",
     "owner": "114b1d9f",
-    "members": [
-      "069d7e0f",
-      "07c6d1e2",
-      "10e6f8c7",
-      "155d7f9e"
-    ],
+    "members": ["069d7e0f", "07c6d1e2", "10e6f8c7", "155d7f9e"],
     "items": [
       {
         "item": "Šampanské",
@@ -456,12 +394,7 @@
     "id": "ab9e0a8b",
     "title": "Nákup na grilovanie na Hore osudu",
     "owner": "13d4a7e5",
-    "members": [
-      "069d7e0f",
-      "07c6d1e2",
-      "10e6f8c7",
-      "146f2e8b"
-    ],
+    "members": ["069d7e0f", "07c6d1e2", "10e6f8c7", "146f2e8b"],
     "items": [
       {
         "item": "Marinované mäso",
@@ -484,20 +417,6 @@
         "state": false
       }
     ],
-    "archived": false
-  },
-  {
-    "title": "123",
-    "owner": "099e3a8b",
-    "members": [],
-    "items": [
-      {
-        "item": "1232",
-        "amount": "",
-        "state": false
-      }
-    ],
-    "archived": false,
-    "id": "9d84c214"
+    "archived": true
   }
 ]

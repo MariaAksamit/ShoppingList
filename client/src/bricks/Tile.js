@@ -21,10 +21,10 @@ function Tile ({ detail, lists }) {
     navigate(`/shoppingList/${detail.id}`, {state: {lists, detail, ownerName, members}});
   };
 
-  const archiving =  (updArchive) => {
+  const archiving =  (archived) => {
     const updatedLists = lists.map(list => {
-      if (list.id === updArchive.id) {
-        return updArchive;
+      if (list.id === archived.id) {
+        return archived;
       } else {
         return list;
       }

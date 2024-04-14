@@ -74,10 +74,11 @@ return (
     </Modal.Header>
 
     <Modal.Body>
-      <div>Do you want to delete or archive shopping list {detail.title} ?</div>
+      <div>Do you want to delete or archive / activate shopping list {detail.title} ?</div>
     </Modal.Body>
         
     <Modal.Footer>
+      {!detail.archived ? (
       <Button 
         variant="primary"
         style={{ marginLeft: "8px" }}
@@ -88,6 +89,18 @@ return (
         >
         Archive
       </Button>
+    ) : (
+      <Button 
+        variant="primary"
+        style={{ marginLeft: "8px" }}
+        onClick={() => {
+            archiving({ ...detail, archived: false });
+            handleCloseModal(); 
+        }}
+        >
+        Activate
+      </Button>
+    )}
       <Button 
         variant="danger"
         style={{ marginLeft: "8px" }}
