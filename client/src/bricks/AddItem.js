@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from 'react-i18next';
 import { Modal, Button, Form } from 'react-bootstrap';
 import Icon from "@mdi/react";
 import { mdiPlus } from "@mdi/js";
 import styles from "../styles/styles.css";
 
 export default function AddItem ({ addItem, handleShowModal }) {
+  const { t } = useTranslation();
   const [isModalShown, setShow] = useState(false);
   const [itemError, setItemError] = useState(null);
   const [formData, setFormData] = useState({
@@ -41,7 +43,7 @@ export default function AddItem ({ addItem, handleShowModal }) {
     setItemError(null);
 
     if (formData.item.length < 2 || formData.item.length > 50) {
-      setItemError("The item name must be 2 - 50 characters long.");
+      setItemError(t("The item name must be 2 - 50 characters long."));
       return;
     };
 
@@ -71,12 +73,12 @@ return (
 
   <Modal show={isModalShown} onHide={handleCloseModal}>
     <Modal.Header closeButton>
-      <Modal.Title>Add new item: </Modal.Title>
+      <Modal.Title>{t("Add new item")}: </Modal.Title>
     </Modal.Header>
 
     <Modal.Body>
       <Form.Group>
-        <Form.Label>New item name</Form.Label>
+        <Form.Label>{t("Item")}</Form.Label>
         <Form.Control
           type="text"
           value={formData.item}
@@ -91,7 +93,7 @@ return (
       </Form.Group>
       <br />
       <Form.Group> 
-        <Form.Label>Amount</Form.Label>
+        <Form.Label>{t("Amount")}</Form.Label>
         <Form.Control 
           type="text" 
           value={formData.amount}
@@ -107,14 +109,14 @@ return (
         style={{ marginLeft: "8px" }}
         onClick={handleSaveItem} 
       >
-        Add Item
+        {t("Add Item")}
       </Button>
       <Button 
         variant="secondary-outline"
         style={{ marginLeft: "8px"}}
         onClick={handleCloseModal} 
       >
-        Close
+        Cancel
       </Button>  
     </Modal.Footer>
 

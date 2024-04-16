@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, Button } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import Icon from "@mdi/react";
 import { mdiTrashCanOutline } from "@mdi/js";
 
@@ -9,6 +10,7 @@ import ShoppingListDel from "./ShoppingListDel";
 import UserContext from "../Provider";
 
 function Tile ({ detail, lists }) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { users, canEdit} = useContext(UserContext);
   const [isDeleteModalShown, setDeleteModalShown] = useState(false);
@@ -35,21 +37,21 @@ return (
   <div className="tile">
   <Card className="listCard">
    {detail.archived && (
-      <div style={{color: "red", fontSize: "80%"}}>List is archived.</div>
+      <div style={{color: "red", fontSize: "80%"}}>{t("List is archived.")}</div>
     )}
   
     <Card.Body>
         <strong> {detail.title} </strong> <br /> <br />
       <div style={{textAlign: "left"}}>
-        <u>Owner:</u> {" "} {ownerName.name}
+        <u>{t("Owner")}:</u> {" "} {ownerName.name}
         <div>
         <br />
-        <u>Members:</u>
+        <u>{t("Members")}:</u>
         <div>
           {members.slice(0, 3).join(", ")} {members.length > 3 && '...'}
         </div>
           <br />
-        <u>Items:</u>
+        <u>{t("Items")}:</u>
         <ul className="item-list">
         {detail.items
             .filter((item) => item.state === false)
@@ -69,7 +71,7 @@ return (
         variant="primary"
         onClick={handleTileClick}
     >
-        Detail
+        {t("Detail")}
     </Button>
     </div>
     {canEdit(detail.owner) && (

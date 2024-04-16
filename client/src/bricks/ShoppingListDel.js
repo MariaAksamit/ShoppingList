@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Modal, Button, Alert } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from "react-router-dom";
 import UserContext from "../Provider";
 
 import styles from "../styles/styles.css";
 
 export default function ShoppingListDel ({ detail, archiving, onClose, isDeleteModalShown }) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const {user} = useContext(UserContext);
   const [showAlert, setShowAlert] = useState(false);
@@ -24,8 +26,6 @@ export default function ShoppingListDel ({ detail, archiving, onClose, isDeleteM
 
 const handleDelete = async () => {
   try {
-    console.log("Deleting list:", detail);
-
     const requestData = {
       id: detail.id,
       userId: user.id
@@ -74,7 +74,7 @@ return (
     </Modal.Header>
 
     <Modal.Body>
-      <div>Do you want to delete or archive / activate shopping list {detail.title} ?</div>
+      <div>{t("Do you want to delete or archive / activate shopping list")} {detail.title} ?</div>
     </Modal.Body>
         
     <Modal.Footer>
@@ -87,7 +87,7 @@ return (
             handleCloseModal(); 
         }}
         >
-        Archive
+        {t("Archive")}
       </Button>
     ) : (
       <Button 
@@ -98,7 +98,7 @@ return (
             handleCloseModal(); 
         }}
         >
-        Activate
+        {t("Activate")}
       </Button>
     )}
       <Button 
@@ -106,14 +106,14 @@ return (
         style={{ marginLeft: "8px" }}
         onClick={() => setShowAlert(true)} 
       >
-        Delete
+        {t("Delete")}
       </Button>
       <Button 
         variant="secondary-outline"
         style={{ marginLeft: "8px"}}
         onClick={handleCloseModal} 
       >
-        Close
+        {t("Close")}
       </Button>  
     </Modal.Footer>
 
@@ -123,7 +123,7 @@ return (
         onClose={() => setShowAlert(false)}
         dismissible
     >
-        <p> Are you sure about delete this shopping list? </p>
+        <p> {t("Are you sure about delete this shopping list?")} </p>
         <hr />
         <div className="d-flex justify-content-end">
             <Button 
@@ -132,14 +132,14 @@ return (
               }} 
                 variant="outline-danger"
             >
-             Cancel
+             {t("Cancel")}
             </Button>
             <Button 
               variant="danger"
               style={{marginLeft: "5px"}}
               onClick={handleConfirmDelete} 
             >
-              Delete
+              {t("Delete")}
             </Button>
         </div>
     </Alert>

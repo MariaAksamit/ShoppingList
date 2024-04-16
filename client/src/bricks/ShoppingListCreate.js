@@ -1,4 +1,5 @@
 import React, {useState, useContext, useEffect} from "react";
+import { useTranslation } from 'react-i18next';
 import { Alert, Modal, Button, Table, Row, Col, Form, Accordion, Dropdown, DropdownButton } from "react-bootstrap";
 import Icon from "@mdi/react";
 import { mdiPlus, mdiTrashCanOutline } from "@mdi/js";
@@ -8,6 +9,7 @@ import styles from "../styles/styles.css";
 import AddItem from "./AddItem";
 
 export default function ShoppingList ({ handleShowModal }) {
+  const { t } = useTranslation();
   const {user, users } = useContext(UserContext);
   const [isModalShown, setShow] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
@@ -44,7 +46,7 @@ export default function ShoppingList ({ handleShowModal }) {
     const errors = [];
       formData.items.forEach((item, index) => {
         if (item.item.length < 2 || item.item.length > 50 || item.amount.length > 50) {
-          errors.push("Item name must be  2 - 50 and amount max 50 characters long.");
+          errors.push(t("Item name must be  2 - 50 and amount max 50 characters long."));
         }
       });
       return errors;
@@ -60,7 +62,7 @@ export default function ShoppingList ({ handleShowModal }) {
         setItemsError(null);
   
         if (formData.title.length < 3 || formData.title.length > 50) {
-          setTitleError("The title must be 3 - 50 characters long.");
+          setTitleError(t("The title must be 3 - 50 characters long."));
           return;
         };
   
@@ -175,24 +177,24 @@ return (
     style={{ marginLeft:"5px"}}
   >
   <Icon path={mdiPlus} size={1} />
-    Create
+    {t("Create")}
   </Button>
 
   <Modal show={isModalShown} onHide={handleCloseModal}>
     
     <Modal.Header closeButton>
-      <Modal.Title>Create new shopping list</Modal.Title>
+      <Modal.Title>{t("Create new shopping list")}</Modal.Title>
     </Modal.Header>
 
     <Modal.Body>
     <Form>
       <Form.Group as={Row} className="mb-3">
-      <Form.Label column sm="2">Title:</Form.Label>
+      <Form.Label column sm="2">{t("Title")}:</Form.Label>
       <Col sm="10">
       <Form.Control
         required
         type="text"
-        placeholder="Name of the shopping list"
+        placeholder={t("Name of the shopping list")}
         value={formData.title}
         minLength={3}
         maxLength={50}
@@ -211,7 +213,7 @@ return (
     </Form.Group>
     <Accordion>
       <Accordion.Item eventKey="0">
-        <Accordion.Header>Members</Accordion.Header>
+        <Accordion.Header>{t("Members")}</Accordion.Header>
         <Accordion.Body>
           <div>
             {formData.members.map((memberId) => {
@@ -232,7 +234,7 @@ return (
           </div>
           <Row>
             <Col className="text-end">
-                <DropdownButton size="sm" title="Add member" variant="outline-primary">
+                <DropdownButton size="sm" title={t("Add Member")} variant="outline-primary">
                 {users
                   .filter(us => ((us.id !== 0) && (us.id !== user.id)))
                   .filter((user) => !formData.members.includes(user.id))
@@ -257,8 +259,8 @@ return (
       <thead>
         <tr>
           <th>#</th>
-          <th>Item Name</th>
-          <th>Amount</th>
+          <th>{t("Item")}</th>
+          <th>{t("Amount")}</th>
           <th> </th>
         </tr>
       </thead>
@@ -316,13 +318,13 @@ return (
         variant="success"
         onClick={handleCreateList}
      >
-            Save
+            {t("Save")}
      </Button>
      <Button 
         variant="secondary"
         onClick={handleCloseModal}    
     >
-            Cancel
+            {t("Cancel")}
     </Button>
   </Modal.Footer>  
   
@@ -332,7 +334,7 @@ return (
     onClose={() => setShowAlert(false)}
     dismissible
   >
-    <p> The list contains no items. Add at least one. </p>
+    <p> {t("The list contains no items. Add at least one.")} </p>
     <hr />
     <div className="d-flex justify-content-end">
       <Button 
@@ -341,7 +343,7 @@ return (
         }} 
         variant="outline-danger"
       >
-        Cancel
+        {t("Cancel")}
       </Button>
     </div>
   </Alert> 

@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useContext } from "react";
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from "react-router-dom"
 import { Alert, Button, Table, Row, Col, Form, Accordion, Dropdown, DropdownButton } from "react-bootstrap";
 import Icon from "@mdi/react";
 import { mdiTrashCanOutline } from "@mdi/js";
-import { useNavigate } from "react-router-dom"
 
 import styles from "../styles/styles.css";
 import AddItem from "./AddItem";
@@ -10,6 +11,7 @@ import ShoppingListDel from "./ShoppingListDel";
 import UserContext from "../Provider";
 
 export default function ShoppingList ({ detail, lists, ownerName, members }) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const {user, users, canEdit} = useContext(UserContext);
   const [listCall, setListCall] = useState({ state: "pending" });
@@ -37,8 +39,8 @@ export default function ShoppingList ({ detail, lists, ownerName, members }) {
 
   useEffect(() => {
     if (!(user.id === detail.owner || formData.members.includes(user.id))) {
-        alert(`You are not authorized to view the shopping list "${detail.title}"`);
-        handleBack();    
+      alert(t("You are not authorized to view the shopping list") + ` "${detail.title}"`);
+      handleBack();    
     }  
   }, [user.id, detail.owner, members]);
   
@@ -49,7 +51,7 @@ export default function ShoppingList ({ detail, lists, ownerName, members }) {
     const errors = [];
     formData.items.forEach((item, index) => {
       if (item.item.length < 2 || item.item.length > 50 || item.amount.length > 50) {
-        errors[index] =("Item name must be  2 - 50 and amount max 50 characters long.");
+        errors[index] =(t("Item name must be  2 - 50 and amount max 50 characters long."));
       }
     });
     return errors;
@@ -65,7 +67,7 @@ export default function ShoppingList ({ detail, lists, ownerName, members }) {
       setItemsError(null);
   
       if (formData.title.length < 3 || formData.title.length > 50) {
-        setTitleError("The title must be 3 - 50 characters long.");
+        setTitleError(t("The title must be 3 - 50 characters long."));
         return;
       };
 
@@ -198,7 +200,7 @@ return (
       <div>
   <Form>
       <Form.Group as={Row} className="mb-3">
-      <Form.Label column sm="2">Shopping List</Form.Label>
+      <Form.Label column sm="2">{t("Shopping List")}:</Form.Label>
       <Col sm="10">
       {canEdit(detail.owner) &&
       <Form.Control
@@ -224,7 +226,7 @@ return (
     </Form.Group>
         <br />
     <Form.Group as={Row} className="mb-3" controlId="formPlaintextEmail">
-      <Form.Label column sm="2">Owner: </Form.Label>
+      <Form.Label column sm="2">{t("Owner")}: </Form.Label>
       <Col sm="10">
         <Form.Control plaintext readOnly defaultValue={ownerName.name}/>
       </Col>
@@ -277,7 +279,7 @@ return (
                   variant="outline-danger"
                   onClick={() => {deleteMember(user.id)}}
                 >
-                  Leave
+                  {t("Leave")}
                 </Button>
               )}
             </Col>
@@ -293,7 +295,7 @@ return (
             style={{ marginBottom: "5px", width: "190px" }}
             onClick={toggleShowAllItems}
           >
-            {showAllItems ? "Active Items" : "All Items"}
+            {showAllItems ? t("Active Items") : t("All Items")}
           </Button>
           <AddItem addItem={addItem} handleShowModal={handleShowModal} />
         </div>
@@ -301,9 +303,9 @@ return (
       <thead>
         <tr>
           <th>#</th>
-          <th>Item Name</th>
-          <th>Amount</th>
-          <th>State</th>
+          <th>{t("Item")}</th>
+          <th>{t("Amount")}</th>
+          <th>{t("State")}</th>
           <th> </th>
         </tr>
       </thead>
@@ -367,14 +369,14 @@ return (
         variant="success"
         onClick={handleEditList}
       >
-          Save
+          {t("Save")}
       </Button>
     {canEdit(detail.owner) &&
       <Button 
         variant="danger"
         onClick={() => {setDeleteModalShown(true)}}
       > 
-          Delete/Archive List
+      {t("Delete/Archive List")}
       </Button>
     }
       <ShoppingListDel 
@@ -387,7 +389,7 @@ return (
         variant="secondary"
         onClick={handleBack}
       >
-        Back
+        {t("Back")}
       </Button>
     </div>
     {isDeleteModalShown && (
@@ -406,7 +408,7 @@ return (
     onClose={() => setShowAlert(false)}
     dismissible
   >
-    <p> The list contains no items. Add at least one. </p>
+    <p> {t("The list contains no items. Add at least one.")} </p>
     <hr />
     <div className="d-flex justify-content-end">
       <Button 

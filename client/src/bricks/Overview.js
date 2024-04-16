@@ -1,5 +1,6 @@
 import React, { useState, useContext, useMemo } from "react";
-import { Button, Form, Navbar, Pagination } from "react-bootstrap";
+import { Button, Form, Navbar } from "react-bootstrap";
+import { useTranslation } from 'react-i18next';
 import Icon from "@mdi/react";
 import { mdiMagnify } from "@mdi/js";
 
@@ -9,6 +10,7 @@ import Tile from "./Tile";
 import ShoppingListCreate from "./ShoppingListCreate";
 
 export default function Overview ({ lists }) {
+  const { t } = useTranslation();
   const [isModalShown, setShow] = useState(false);
   const {user, users, isLoggedIn} = useContext(UserContext);
   const [searchBy, setSearchBy] = useState("");
@@ -52,7 +54,7 @@ return (
   {isLoggedIn && 
     <Navbar collapseOnSelect expand="sm" bg="light">
         <div className="container-fluid">
-            <Navbar.Brand style={{fontSize: "100%"}}>Overview of shopping lists</Navbar.Brand>
+            <Navbar.Brand style={{fontSize: "100%"}}>{t("Overview of shopping lists")}</Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse style={{ justifyContent: "flex-end" }}>
               <Form className="d-flex" onSubmit={handleSearch}>
@@ -60,7 +62,7 @@ return (
                   id={"searchInput"}
                   style={{ maxWidth: "150px" }}
                   type="search"
-                  placeholder="Search"
+                  placeholder={t("Search")}
                   aria-label="Search"
                   onChange={handleSearchDelete}
                 />
@@ -76,7 +78,7 @@ return (
                 variant="secondary" 
                 onClick={toggleshowActiveLists}
               >
-                {showActiveLists ? "All Lists" : "Active Lists"}
+                {showActiveLists ? t("All Lists") : t("Active Lists")}
               </Button>
               <ShoppingListCreate handleShowModal={handleOpenModal}/>            
             </Navbar.Collapse> 
