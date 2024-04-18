@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useTranslation } from 'react-i18next';
 import { Modal, Button, Form } from 'react-bootstrap';
 import Icon from "@mdi/react";
 import { mdiPlus } from "@mdi/js";
+import UserContext from "../Provider";
+
 import styles from "../styles/styles.css";
 
 export default function AddItem ({ addItem, handleShowModal }) {
+  const {darkMode} = useContext(UserContext);
   const { t } = useTranslation();
   const [isModalShown, setShow] = useState(false);
   const [itemError, setItemError] = useState(null);
@@ -65,19 +68,21 @@ export default function AddItem ({ addItem, handleShowModal }) {
 return (
 <>
   <Button 
-    variant="success"
+    variant={darkMode ? "outline-success" : "success"}
     style={{ marginLeft: "auto", marginBottom: "5px", display: "block" }} 
     onClick={handleOpenModal}>
     <Icon path={mdiPlus} size={1} />
   </Button>
-
   <Modal show={isModalShown} onHide={handleCloseModal}>
+    <div className={darkMode ? "blackBgr2" : ""}>
+    
     <Modal.Header closeButton>
       <Modal.Title>{t("Add new item")}: </Modal.Title>
     </Modal.Header>
 
     <Modal.Body>
-      <Form.Group>
+      <Form className={darkMode ? "blackBgr2" : ""}>
+      <Form.Group className={darkMode ? "blackBgr2" : ""}>
         <Form.Label>{t("Item")}</Form.Label>
         <Form.Control
           type="text"
@@ -101,18 +106,19 @@ return (
           maxLength={50} 
         /> 
       </Form.Group>
+      </Form>
     </Modal.Body>
         
     <Modal.Footer>
       <Button 
-        variant="primary"
+        variant={darkMode ? "outline-primary" : "primary"}
         style={{ marginLeft: "8px" }}
         onClick={handleSaveItem} 
       >
         {t("Add Item")}
       </Button>
       <Button 
-        variant="secondary-outline"
+        variant="outline-secondary"
         style={{ marginLeft: "8px"}}
         onClick={handleCloseModal} 
       >
@@ -120,6 +126,7 @@ return (
       </Button>  
     </Modal.Footer>
 
+  </div>
   </Modal>
 </>
 );

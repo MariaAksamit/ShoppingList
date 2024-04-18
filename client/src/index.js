@@ -16,9 +16,9 @@ root.render(
       <Router>
         <Routes>
           <Route path="/" element={<App />}>
-            <Route path="" element={<OverviewR/>} />
-            <Route path="/shoppingList/:id" element={<ShoppingListR/>} />
-            <Route path="/overview" element={<OverviewR/>} />
+            <Route path="" element={<OverviewR />} />
+            <Route path="/shoppingList/:id" element={<ShoppingListR />} />
+            <Route path="/overview" element={<OverviewR />} />
           </Route>
         </Routes>
       </Router>

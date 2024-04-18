@@ -9,7 +9,7 @@ import styles from "../styles/styles.css";
 export default function ShoppingListDel ({ detail, archiving, onClose, isDeleteModalShown }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const {user} = useContext(UserContext);
+  const {user, darkMode} = useContext(UserContext);
   const [showAlert, setShowAlert] = useState(false);
   const [isModalShown, setShow] = useState(false);
 
@@ -69,6 +69,8 @@ const handleConfirmDelete = async () => {
 return (
 <>
 <Modal show={isModalShown} onHide={handleCloseModal}>
+<div className={darkMode ? "blackBgr2" : ""}>
+
     <Modal.Header closeButton>
       <Modal.Title>Archive / delete shopping list </Modal.Title>
     </Modal.Header>
@@ -80,7 +82,7 @@ return (
     <Modal.Footer>
       {!detail.archived ? (
       <Button 
-        variant="primary"
+        variant={darkMode ? "outline-primary" : "primary"}
         style={{ marginLeft: "8px" }}
         onClick={() => {
             archiving({ ...detail, archived: true });
@@ -91,7 +93,7 @@ return (
       </Button>
     ) : (
       <Button 
-        variant="primary"
+        variant={darkMode ? "outline-primary" : "primary"}
         style={{ marginLeft: "8px" }}
         onClick={() => {
             archiving({ ...detail, archived: false });
@@ -102,7 +104,7 @@ return (
       </Button>
     )}
       <Button 
-        variant="danger"
+        variant={darkMode ? "outline-danger" : "danger"}
         style={{ marginLeft: "8px" }}
         onClick={() => setShowAlert(true)} 
       >
@@ -143,6 +145,7 @@ return (
             </Button>
         </div>
     </Alert>
+    </div>
   </Modal>
 </>
 );

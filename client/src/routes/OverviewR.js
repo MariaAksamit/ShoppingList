@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import UserContext from "../Provider";
 import Overview from "../bricks/Overview"
 
-
 function OverviewR() {
+  const {darkMode} = useContext(UserContext);
   const [lists, setLists] = useState([]);
 
   useEffect(() => {
@@ -14,7 +15,7 @@ function OverviewR() {
  }, []); 
 
   return (
-    <div>
+    <div className={darkMode ? "blackBgr" : ""}>
       <Overview lists={lists}/>
     </div>
   );

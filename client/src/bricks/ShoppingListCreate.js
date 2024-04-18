@@ -10,7 +10,7 @@ import AddItem from "./AddItem";
 
 export default function ShoppingList ({ handleShowModal }) {
   const { t } = useTranslation();
-  const {user, users } = useContext(UserContext);
+  const {user, users, darkMode } = useContext(UserContext);
   const [isModalShown, setShow] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [titleError, setTitleError] = useState(null);
@@ -172,16 +172,17 @@ export default function ShoppingList ({ handleShowModal }) {
 return (
   <>
   <Button 
-    variant="success"
+    variant={darkMode ? "outline-light" : "success"}
     onClick={handleOpenModal}
-    style={{ marginLeft:"5px"}}
+    style={{ marginLeft:"5px", marginRight: "15px"}}
   >
   <Icon path={mdiPlus} size={1} />
     {t("Create")}
   </Button>
 
   <Modal show={isModalShown} onHide={handleCloseModal}>
-    
+    <div className={darkMode ? "blackBgr2" : ""}>
+
     <Modal.Header closeButton>
       <Modal.Title>{t("Create new shopping list")}</Modal.Title>
     </Modal.Header>
@@ -208,7 +209,7 @@ return (
     <Form.Group as={Row} className="mb-3" controlId="formPlaintextEmail">
       <Form.Label column sm="2">Owner: </Form.Label>
       <Col sm="10">
-        <Form.Control plaintext readOnly defaultValue={formData.owner}/>
+        <Form.Control className="blackBgr2" plaintext readOnly defaultValue={formData.owner}/>
       </Col>
     </Form.Group>
     <Accordion>
@@ -255,7 +256,7 @@ return (
         <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "5px" }}>
           <AddItem addItem={addItem} handleShowModal={handleShowModal} />
         </div>
-    <Table striped bordered>
+    <Table striped bordered variant={darkMode ? "dark" : ""}>
       <thead>
         <tr>
           <th>#</th>
@@ -315,13 +316,13 @@ return (
   
   <Modal.Footer>
      <Button 
-        variant="success"
+        variant={darkMode ? "outline-success" : "success"}
         onClick={handleCreateList}
      >
             {t("Save")}
      </Button>
      <Button 
-        variant="secondary"
+        variant="outline-secondary"
         onClick={handleCloseModal}    
     >
             {t("Cancel")}
@@ -347,6 +348,7 @@ return (
       </Button>
     </div>
   </Alert> 
+  </div>
 </Modal>
   </>
 );

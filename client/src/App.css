@@ -2,3 +2,10 @@
   text-align: center;
   margin-top: 55px;
 }
+
+.App.dark {
+  text-align: center;
+  margin-top: 55px;
+  background-color: black;
+  color: white;
+}

@@ -1,50 +1,131 @@
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body.dark-mode {
+  background-color: black;
+  color: white;
+}
+
+body.light-mode {
+  background-color: white;
+  color: black;
+}
+
 .homePage {
-    margin-top: 100px;
-    justify-content: center;
+  margin-top: 100px;
+  justify-content: center;
+}
+
+.overview {
+  margin: 10px;
+  max-width: 100%;
+  overflow: auto;
+}
+
+.overview.dark-mode {
+  background-color: black;
+  color: white;
+}
+
+.listCard {
+  height: 445px; 
+  overflow: hidden;
+}
+
+.listCard.dark-mode {
+  background-color: black;
+  color: white;
+  border: 1px solid white;
 }
 
 .formDetail {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    text-align: left;
-    max-width: 770px;
-    margin: 100px auto;
-    padding: 0 20px;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: left;
+  max-width: 770px;
+  padding: 0 20px;
+  overflow: auto;
+}
+
+.warning {
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  max-width: 770px;
+  overflow: auto;
+}
+
+.formDetail.dark-mode {
+  background-color: black;
+  color: white;
 }
 
 .formDetailButton {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
 }
 
 .memberNames {
-    color: black; 
-    text-decoration: none;
-    overflow: hidden;
-  }
+  text-decoration: none;
+  overflow: hidden;
+}
   
-  .memberNames:hover{
-    text-decoration: underline;
-  }
+.memberNames:hover{
+  text-decoration: underline;
+}
 
-  .listCard {
-    height: 445px; 
-    overflow: hidden;
-  }
+.item-list {
+  list-style-type: none;
+}
 
-  .overview {
-    margin: 10px;
-    max-width: 100%;
-    overflow: auto;
-  }
+.item-list li:before {
+  content: "-"; 
+  margin-right: 5px;
+}
 
-  .item-list {
-    list-style-type: none; /* Odstrániť zarážky */
-  }
-  
-  .item-list li:before {
-    content: "-"; /* Nastaviť pomlčku pred každým prvkom */
-    margin-right: 5px; /* Voliteľné: pridá medzeru medzi pomlčkou a textom */
-  }
+.btn-purple {
+  background-color: rgb(70, 12, 70);
+  color: white;
+}
+
+.bg-purple {
+  background-color: rgb(70, 12, 70);
+  color: white;
+}
+
+.bg-greenLight {
+  background-color: rgb(215, 237, 209);
+  color: black;
+}
+
+.nadpisDark {
+  color: rgb(161, 201, 150);
+}
+
+.nadpisLight {
+  color: rgb(215, 237, 209);
+}
+
+.blackBgr {
+  background-color: black;
+  color: white;
+  min-height: 100vh;
+}
+
+.blackBgr2 {
+  background-color: black;
+  color: white;
+}
+
+.accordion-dark {
+  background-color: black;
+  color: white;
+}

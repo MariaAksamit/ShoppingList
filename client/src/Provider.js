@@ -4,6 +4,7 @@ const UserContext = createContext();
 
 export function Provider({ children })  {
  const [users, setUsers] = useState([]);
+ const [darkMode, setDarkMode] = useState(false); // pridanie stavu pre dark/light mode
 
   useEffect(() => {
     fetch('http://127.0.0.1:8000/users')
@@ -36,6 +37,10 @@ export function Provider({ children })  {
     return false;
   };
 
+  const toggleDarkMode = () => {
+    setDarkMode(prevDarkMode => !prevDarkMode);
+  };
+
 return (
   <UserContext.Provider 
     value = {{ 
@@ -43,7 +48,9 @@ return (
       users, 
       isLoggedIn,
       changeUser,
-      canEdit, 
+      canEdit,
+      darkMode,
+      toggleDarkMode
     }}
       >
         {children}

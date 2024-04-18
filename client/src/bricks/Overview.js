@@ -12,7 +12,7 @@ import ShoppingListCreate from "./ShoppingListCreate";
 export default function Overview ({ lists }) {
   const { t } = useTranslation();
   const [isModalShown, setShow] = useState(false);
-  const {user, users, isLoggedIn} = useContext(UserContext);
+  const {user, users, isLoggedIn, darkMode} = useContext(UserContext);
   const [searchBy, setSearchBy] = useState("");
   const [showActiveLists, setshowActiveLists] = useState(true);
 
@@ -50,9 +50,9 @@ export default function Overview ({ lists }) {
 
 return (
 
-<div>
+<div className={`App ${darkMode ? 'dark' : ''}`}>
   {isLoggedIn && 
-    <Navbar collapseOnSelect expand="sm" bg="light">
+    <Navbar collapseOnSelect expand="sm" bg={darkMode ? "dark" : "greenLight"} variant={darkMode ? "dark" : "light"}>
         <div className="container-fluid">
             <Navbar.Brand style={{fontSize: "100%"}}>{t("Overview of shopping lists")}</Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -68,14 +68,14 @@ return (
                 />
                 <Button
                   style={{ marginRight: "8px" }}
-                  variant="outline-success"
+                  variant={darkMode ? "outline-light" : "outline-success"}
                   type="submit"
                 >
                 <Icon size={1} path={mdiMagnify} />
                 </Button>
               </Form>
               <Button 
-                variant="secondary" 
+                variant={darkMode ? "outline-light" : "secondary"}
                 onClick={toggleshowActiveLists}
               >
                 {showActiveLists ? t("All Lists") : t("Active Lists")}
@@ -85,24 +85,32 @@ return (
         </div>
     </Navbar>
     }
-<div className="overview">
-  {isLoggedIn && (   
-<div className="row">
-    {filteredShoppingLists.map((list) => {
-      if (user.id === list.owner || list.members.includes(user.id)) {
-        return (
-          <div
-            className="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3"
-            style={{ paddingBottom: "16px"}}
-          >
-            <Tile detail={list} users={users} lists={lists}/>
-          </div>
-          );
-        }
-      })}
-          </div>
-      )}
+<div className={`overview ${darkMode ? 'dark-mode' : ''}`}>
+  {isLoggedIn && lists.length ? (   
+    <div className="container">
+      <div className="row">
+        {filteredShoppingLists.map((list) => {
+          if (user.id === list.owner || list.members.includes(user.id)) {
+            return (
+              <div
+                key={list.id}
+                className={`col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3 ${darkMode ? 'dark-mode' : 'light-mode'}`}            
+                style={{ paddingBottom: "16px"}}
+              >
+                <Tile detail={list} users={users} lists={lists}/>
+              </div>
+            );
+          }
+        })}
+      </div>
+    </div>
+  ) : (
+    <div style={{ margin: "16px auto", textAlign: "center" }}>
+      {isLoggedIn ? t("No shopping lists to display.") : t("Please log in to view your shopping lists.")}
+    </div>
+  )}
 </div>
+
 </div>
 );
 };

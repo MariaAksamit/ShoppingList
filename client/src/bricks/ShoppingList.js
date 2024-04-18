@@ -13,7 +13,7 @@ import UserContext from "../Provider";
 export default function ShoppingList ({ detail, lists, ownerName, members }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const {user, users, canEdit} = useContext(UserContext);
+  const {user, users, canEdit, darkMode} = useContext(UserContext);
   const [listCall, setListCall] = useState({ state: "pending" });
   const [showAlert, setShowAlert] = useState(false);
   const [isModalShown, setShow] = useState(false);
@@ -196,15 +196,14 @@ export default function ShoppingList ({ detail, lists, ownerName, members }) {
 return (
   <>
 
-  <div className="formDetail">
-      <div>
+<div className={`App ${darkMode ? 'dark' : ''}`}>
+<div className={`formDetail ${darkMode ? 'dark-mode' : ''}`}>
   <Form>
       <Form.Group as={Row} className="mb-3">
       <Form.Label column sm="2">{t("Shopping List")}:</Form.Label>
       <Col sm="10">
       {canEdit(detail.owner) &&
       <Form.Control
-        required
         type="text"
         value={formData.title}
         minLength={3}
@@ -219,6 +218,7 @@ return (
         <Form.Control
           plaintext
           readOnly
+          className={darkMode ? "blackBgr2" : ""}
           defaultValue={formData.title}
         />
       )}
@@ -228,11 +228,11 @@ return (
     <Form.Group as={Row} className="mb-3" controlId="formPlaintextEmail">
       <Form.Label column sm="2">{t("Owner")}: </Form.Label>
       <Col sm="10">
-        <Form.Control plaintext readOnly defaultValue={ownerName.name}/>
+        <Form.Control className={darkMode ? "blackBgr2" : ""} plaintext readOnly defaultValue={ownerName.name}/>
       </Col>
     </Form.Group>
       <br />
-    <Accordion>
+    <Accordion bsPrefix={darkMode ? "accordion-dark" : ""}>
       <Accordion.Item eventKey="0">
         <Accordion.Header>Members</Accordion.Header>
         <Accordion.Body>
@@ -291,7 +291,7 @@ return (
       <div>
         <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "5px" }}>
           <Button 
-            variant="secondary" 
+            variant={darkMode ? "outline-secondary" : "secondary"} 
             style={{ marginBottom: "5px", width: "190px" }}
             onClick={toggleShowAllItems}
           >
@@ -299,7 +299,7 @@ return (
           </Button>
           <AddItem addItem={addItem} handleShowModal={handleShowModal} />
         </div>
-    <Table striped bordered>
+    <Table striped bordered variant={darkMode ? "dark" : ""}>
       <thead>
         <tr>
           <th>#</th>
@@ -366,14 +366,14 @@ return (
     <br />
     <div className="formDetailButton">
       <Button 
-        variant="success"
+        variant={darkMode ? "outline-success" : "success"}
         onClick={handleEditList}
       >
           {t("Save")}
       </Button>
     {canEdit(detail.owner) &&
       <Button 
-        variant="danger"
+        variant={darkMode ? "outline-danger" : "danger"}
         onClick={() => {setDeleteModalShown(true)}}
       > 
       {t("Delete/Archive List")}
@@ -386,7 +386,7 @@ return (
         isDeleteModalShown={isDeleteModalShown}
       />
       <Button 
-        variant="secondary"
+        variant={darkMode ? "outline-secondary" : "secondary"}
         onClick={handleBack}
       >
         {t("Back")}
@@ -403,6 +403,7 @@ return (
   </div>
   </div>
   <Alert
+    className="warning"
     show={showAlert}
     variant="warning" 
     onClose={() => setShowAlert(false)}

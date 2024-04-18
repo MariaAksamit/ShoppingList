@@ -12,7 +12,7 @@ import UserContext from "../Provider";
 function Tile ({ detail, lists }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { users, canEdit} = useContext(UserContext);
+  const { users, canEdit, darkMode} = useContext(UserContext);
   const [isDeleteModalShown, setDeleteModalShown] = useState(false);
   const ownerName = users.find((user) => user.id === detail.owner);
   const members = users
@@ -34,24 +34,23 @@ function Tile ({ detail, lists }) {
   };
 
 return (
-  <div className="tile">
-  <Card className="listCard">
+  <Card className={`listCard ${darkMode ? 'dark-mode' : ''}`}>
    {detail.archived && (
       <div style={{color: "red", fontSize: "80%"}}>{t("List is archived.")}</div>
     )}
   
     <Card.Body>
-        <strong> {detail.title} </strong> <br /> <br />
+        <strong className={`listCard ${darkMode ? 'nadpisDark' : ''}`}> {detail.title} </strong> <br /> <br />
       <div style={{textAlign: "left"}}>
-        <u>{t("Owner")}:</u> {" "} {ownerName.name}
+        <u className={`listCard ${darkMode ? 'nadpisLight' : ''}`}>{t("Owner")}:</u> {" "} {ownerName.name}
         <div>
         <br />
-        <u>{t("Members")}:</u>
+        <u className={`listCard ${darkMode ? 'nadpisLight' : ''}`}>{t("Members")}:</u>
         <div>
           {members.slice(0, 3).join(", ")} {members.length > 3 && '...'}
         </div>
           <br />
-        <u>{t("Items")}:</u>
+        <u className={`listCard ${darkMode ? 'nadpisLight' : ''}`}>{t("Items")}:</u>
         <ul className="item-list">
         {detail.items
             .filter((item) => item.state === false)
@@ -68,7 +67,7 @@ return (
       <br />
       <div style={{ position: 'absolute', bottom: '20px', left: '50%', transform: 'translateX(-50%)' }}>
     <Button 
-        variant="primary"
+        variant={darkMode ? "outline-success" : "primary"}
         onClick={handleTileClick}
     >
         {t("Detail")}
@@ -92,7 +91,6 @@ return (
     )}
     </Card.Body>
   </Card>
-  </div>
 );
 };
 
