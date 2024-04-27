@@ -2,7 +2,7 @@ import React, { createContext, useState, useEffect } from 'react';
 
 const UserContext = createContext();
 
-export function Provider({ children })  {
+export function UserProvider({ children })  {
  const [users, setUsers] = useState([]);
  const [darkMode, setDarkMode] = useState(false); // pridanie stavu pre dark/light mode
 

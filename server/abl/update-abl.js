@@ -12,10 +12,9 @@ let schema = {
     title: { type: "string", minLength: 3, maxLength: 50 },
     owner: { type: "string" },
     members: {
-        type: "array",
-        minItems: 0,
-        items: {type: "string"}
-      },
+      type: "array",
+      items: { type: "string" }
+    },
     items: {
         type: "array",
         minItems: 1,
@@ -39,8 +38,6 @@ let schema = {
 async function UpdateAbl(req, res) {
   try {
     const ajv = new Ajv();
-        console.log("Request body:", req.body);
-
     let list = req.body;
     const valid = ajv.validate(schema, req.body);
     if (valid) {

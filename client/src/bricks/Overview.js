@@ -5,7 +5,7 @@ import Icon from "@mdi/react";
 import { mdiMagnify } from "@mdi/js";
 
 import styles from "../styles/styles.css";
-import UserContext from "../Provider";
+import UserContext from "../UserProvider";
 import Tile from "./Tile";
 import ShoppingListCreate from "./ShoppingListCreate";
 

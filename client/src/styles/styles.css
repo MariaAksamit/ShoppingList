@@ -128,4 +128,15 @@ body.light-mode {
 .accordion-dark {
   background-color: black;
   color: white;
+  border: 1px solid white;
+  padding: 15px;
+}
+
+.loading {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgb(70, 12, 70);;
 }

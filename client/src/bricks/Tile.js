@@ -7,7 +7,7 @@ import { mdiTrashCanOutline } from "@mdi/js";
 
 import styles from "../styles/styles.css";
 import ShoppingListDel from "./ShoppingListDel";
-import UserContext from "../Provider";
+import UserContext from "../UserProvider";
 
 function Tile ({ detail, lists }) {
   const { t } = useTranslation();

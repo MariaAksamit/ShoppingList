@@ -1,6 +1,6 @@
 import React, {useContext} from "react";
 import { useLocation } from "react-router-dom";
-import UserContext from "../Provider";
+import UserContext from "../UserProvider";
 import ShoppingList from "../bricks/ShoppingList";
 import App from "../App.css";
 

@@ -8,7 +8,7 @@ import { mdiTrashCanOutline } from "@mdi/js";
 import styles from "../styles/styles.css";
 import AddItem from "./AddItem";
 import ShoppingListDel from "./ShoppingListDel";
-import UserContext from "../Provider";
+import UserContext from "../UserProvider";
 
 export default function ShoppingList ({ detail, lists, ownerName, members }) {
   const { t } = useTranslation();
@@ -258,7 +258,13 @@ return (
           <Row>
             <Col className="text-end">
               {canEdit(detail.owner) &&
-                <DropdownButton size="sm" title="Add member" variant="outline-primary">
+                <DropdownButton 
+                  size="sm" 
+                  title="Add member" 
+                  variant="outline-primary"
+                  id={darkMode ? "nav-dropdown-dark" : "nav-dropdown-light" }
+                  menuVariant={darkMode ? "dark" : "light"}
+                >
                 {users
                   .filter(us => ((us.id !== 0) && (us.id !== user.id)))
                   .filter((user) => !formData.members.includes(user.id))

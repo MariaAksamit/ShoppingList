@@ -1,67 +1,13 @@
 [
   {
-    "id": "9a100e1c",
-    "title": "Nákup na víkend",
-    "owner": "069d7e0f",
-    "members": [
-      "07c6d1e2",
-      "082b6d4a",
-      "099e3a8b",
-      "146f2e8b"
-    ],
-    "items": [
-      {
-        "item": "Mlieko",
-        "amount": "2 litre",
-        "state": false
-      },
-      {
-        "item": "Chlieb",
-        "amount": "1 ks",
-        "state": false
-      },
-      {
-        "item": "Jablká",
-        "amount": "0,5 kg",
-        "state": false
-      }
-    ],
-    "archived": true
-  },
-  {
     "id": "ce711d9e",
-    "title": "Nákup na stretnutie temných lovcov",
+    "title": "Nákup",
     "owner": "114b1d9f",
-    "members": [
-      "069d7e0f",
-      "10e6f8c7",
-      "122f8c7a",
-      "13d4a7e5"
-    ],
+    "members": [],
     "items": [
       {
         "item": "Káva",
         "amount": "500 g",
-        "state": false
-      },
-      {
-        "item": "Čaj",
-        "amount": "100 g",
-        "state": false
-      },
-      {
-        "item": "Papierové utierky",
-        "amount": "1 balenie",
-        "state": false
-      },
-      {
-        "item": "Vodka",
-        "amount": "1 fľaša",
-        "state": false
-      },
-      {
-        "item": "Stoličky",
-        "amount": "20 ks",
         "state": false
       }
     ],
@@ -497,17 +443,55 @@
     "archived": true
   },
   {
-    "title": "vcvbfbfgh",
-    "owner": "099e3a8b",
+    "title": "tztrzztr",
+    "owner": "10e6f8c7",
     "members": [],
     "items": [
       {
-        "item": "gfhhgf",
-        "amount": "fghhgf",
+        "item": "rzt",
+        "amount": "rtzr",
         "state": false
       }
     ],
     "archived": false,
-    "id": "305eeed9"
+    "id": "f303aa65"
+  },
+  {
+    "id": "b4b49093",
+    "title": "Posledná večera",
+    "owner": "07c6d1e2",
+    "members": [
+      "069d7e0f",
+      "099e3a8b",
+      "146f2e8b"
+    ],
+    "items": [
+      {
+        "item": "Kuracie stehná",
+        "amount": "1 kg",
+        "state": false
+      },
+      {
+        "item": "Zemiaky",
+        "amount": "2 kg",
+        "state": false
+      },
+      {
+        "item": "Paprika",
+        "amount": "500 g",
+        "state": false
+      },
+      {
+        "item": "Víno",
+        "amount": "1 fľaša",
+        "state": false
+      },
+      {
+        "item": "Antrax",
+        "amount": "10 g",
+        "state": false
+      }
+    ],
+    "archived": false
   }
 ]

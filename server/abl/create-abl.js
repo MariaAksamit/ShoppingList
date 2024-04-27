@@ -12,8 +12,7 @@ let schema = {
     owner: { type: "string" },
     members: {
       type: "array",
-      minItems: 0,
-      members: []
+      items: { type: "string" }
     },
     items: {
       type: "array",
@@ -36,9 +35,9 @@ let schema = {
 };
 
 async function CreateAbl(req, res) {
-  try {
+  try {   
     const ajv = new Ajv();
-    const valid = true;
+    const valid = ajv.validate(schema, req.body);
     if (valid) {
       let list = req.body;
       list = await dao.createList(list);

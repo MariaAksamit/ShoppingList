@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Alert, Modal, Button, Table, Row, Col, Form, Accordion, Dropdown, DropdownButton } from "react-bootstrap";
 import Icon from "@mdi/react";
 import { mdiPlus, mdiTrashCanOutline } from "@mdi/js";
-import UserContext from "../Provider";
+import UserContext from "../UserProvider";
 
 import styles from "../styles/styles.css";
 import AddItem from "./AddItem";
@@ -209,10 +209,10 @@ return (
     <Form.Group as={Row} className="mb-3" controlId="formPlaintextEmail">
       <Form.Label column sm="2">Owner: </Form.Label>
       <Col sm="10">
-        <Form.Control className="blackBgr2" plaintext readOnly defaultValue={formData.owner}/>
+        <Form.Control className={darkMode ? "blackBgr2" : ""} plaintext readOnly defaultValue={formData.owner}/>
       </Col>
     </Form.Group>
-    <Accordion>
+    <Accordion bsPrefix={darkMode ? "accordion-dark" : ""}>
       <Accordion.Item eventKey="0">
         <Accordion.Header>{t("Members")}</Accordion.Header>
         <Accordion.Body>
@@ -235,7 +235,13 @@ return (
           </div>
           <Row>
             <Col className="text-end">
-                <DropdownButton size="sm" title={t("Add Member")} variant="outline-primary">
+                <DropdownButton 
+                  size="sm" 
+                  title={t("Add Member")} 
+                  variant="outline-primary"
+                  id={darkMode ? "nav-dropdown-dark" : "nav-dropdown-light" }
+                  menuVariant={darkMode ? "dark" : "light"}
+                >
                 {users
                   .filter(us => ((us.id !== 0) && (us.id !== user.id)))
                   .filter((user) => !formData.members.includes(user.id))

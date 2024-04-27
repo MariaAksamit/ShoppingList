@@ -35,5 +35,7 @@
     "Vymaž/archivuj zoznam": "Delete/Archive List",
     "Zoznam neobsahuje žiadne položky. Pridajte aspoň jednu.": "The list contains no items. Add at least one.",
     "Názov nákupného zoznamu": "Name of the shopping list",
-    "Pridaj člena": "Add Member"
+    "Pridaj člena": "Add Member",
+    "Nepodarilo sa načítať dáta.": "Failed to load list data.",
+    "Chyba pri načítaní dát": "Error loading data"
 }

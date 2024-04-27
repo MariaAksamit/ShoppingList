@@ -4,7 +4,7 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import {Provider} from "./Provider"
+import { UserProvider } from "./UserProvider"
 import App from './App';
 import ShoppingListR from "./routes/ShoppingListR";
 import OverviewR from './routes/OverviewR';
@@ -12,7 +12,7 @@ import OverviewR from './routes/OverviewR';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Provider>
+    <UserProvider>
       <Router>
         <Routes>
           <Route path="/" element={<App />}>
@@ -22,7 +22,7 @@ root.render(
           </Route>
         </Routes>
       </Router>
-    </Provider>
+    </UserProvider>
   </React.StrictMode>
 );
 

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Modal, Button, Form } from 'react-bootstrap';
 import Icon from "@mdi/react";
 import { mdiPlus } from "@mdi/js";
-import UserContext from "../Provider";
+import UserContext from "../UserProvider";
 
 import styles from "../styles/styles.css";
 

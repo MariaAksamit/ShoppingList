@@ -10,7 +10,7 @@ import Offcanvas from "react-bootstrap/Offcanvas";
 import Icon from '@mdi/react' 
 import { mdiWhiteBalanceSunny, mdiMoonWaningCrescent } from '@mdi/js';
 import { useTranslation } from "react-i18next";
-import UserContext from "./Provider";
+import UserContext from "./UserProvider";
 import i18n from "./i18n";
 import styles from "./styles/styles.css";
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Modal, Button, Alert } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from "react-router-dom";
-import UserContext from "../Provider";
+import UserContext from "../UserProvider";
 
 import styles from "../styles/styles.css";
 

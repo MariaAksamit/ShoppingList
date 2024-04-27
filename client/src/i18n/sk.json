@@ -17,6 +17,8 @@
     "Delete": "Vymazať",
     "Delete/Archive List": "Vymaž/archivuj zoznam",
     "Do you want to delete or archive / activate shopping list": "Chcete vymazať alebo archivovať / aktivovať nákupný zoznam",
+    "Error loading data": "Chyba pri načítaní dát",
+    "Failed to load list data.": "Nepodarilo sa načítať dáta.",
     "Item": "Položka",
     "Items": "Položky",
     "Item name must be  2 - 50 and amount max 50 characters long.": "Názov položky musí mať 2 - 50 a množstvo max 50 znakov.",
