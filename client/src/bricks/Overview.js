@@ -9,7 +9,7 @@ import UserContext from "../UserProvider";
 import Tile from "./Tile";
 import ShoppingListCreate from "./ShoppingListCreate";
 
-export default function Overview ({ lists }) {
+export default function Overview ({ lists, onDeleteSuccess }) {
   const { t } = useTranslation();
   const [isModalShown, setShow] = useState(false);
   const {user, users, isLoggedIn, darkMode} = useContext(UserContext);
@@ -47,6 +47,10 @@ export default function Overview ({ lists }) {
   const toggleshowActiveLists = () => {
     setshowActiveLists((prevshowActiveLists) => !prevshowActiveLists);
   };
+
+   const handleDeleteSuccess = () => {
+    onDeleteSuccess();
+  }; 
 
 return (
 
@@ -97,7 +101,7 @@ return (
                 className={`col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3 ${darkMode ? 'dark-mode' : 'light-mode'}`}            
                 style={{ paddingBottom: "16px"}}
               >
-                <Tile detail={list} users={users} lists={lists}/>
+                <Tile detail={list} users={users} lists={lists} onDeleteSuccess={handleDeleteSuccess} />
               </div>
             );
           }

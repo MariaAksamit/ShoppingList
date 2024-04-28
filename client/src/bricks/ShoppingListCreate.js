@@ -4,6 +4,7 @@ import { Alert, Modal, Button, Table, Row, Col, Form, Accordion, Dropdown, Dropd
 import Icon from "@mdi/react";
 import { mdiPlus, mdiTrashCanOutline } from "@mdi/js";
 import UserContext from "../UserProvider";
+import { useList } from "../ListProvider"
 
 import styles from "../styles/styles.css";
 import AddItem from "./AddItem";
@@ -11,11 +12,11 @@ import AddItem from "./AddItem";
 export default function ShoppingList ({ handleShowModal }) {
   const { t } = useTranslation();
   const {user, users, darkMode } = useContext(UserContext);
+  const { createList } = useList();
   const [isModalShown, setShow] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [titleError, setTitleError] = useState(null);
   const [itemsError, setItemsError] = useState(null);
-  const [listCall, setListCall] = useState({ state: "pending" });
   const [formData, setFormData] = useState({
     title: "",
     owner: user.name,
@@ -23,20 +24,20 @@ export default function ShoppingList ({ handleShowModal }) {
     items: [],
     });
 
-    const handleCloseModal = () => {
-        setShow(false);
-      };
+  const handleCloseModal = () => {
+    setShow(false);
+  };
 
-    const handleOpenModal = () => {
-        setFormData({
-            title: "",
-            owner: user.name,
-            members: [],
-            items: [],
-          });
-        handleShowModal();
-        setShow(true);
-      };
+  const handleOpenModal = () => {
+    setFormData({
+      title: "",
+      owner: user.name,
+      members: [],
+      items: [],
+    });
+    handleShowModal();
+    setShow(true);
+  };
 
   useEffect(() => {
     if (isModalShown) handleOpenModal();
@@ -51,60 +52,6 @@ export default function ShoppingList ({ handleShowModal }) {
       });
       return errors;
   };
-
-  const handleCreateList = async (e) => {
-      try {
-        e.preventDefault();
-        e.stopPropagation();
-                     
-        // Resetujte chyby pred každým overením
-        setTitleError(null);
-        setItemsError(null);
-  
-        if (formData.title.length < 3 || formData.title.length > 50) {
-          setTitleError(t("The title must be 3 - 50 characters long."));
-          return;
-        };
-  
-        const itemErrors = validateItems();
-          if (Object.keys(itemErrors).length > 0) {
-          setItemsError(itemErrors);
-          return;
-        };
-
-        if (formData.items.length === 0) {
-          setShowAlert(true);
-          return;
-        };
-        
-        const newList = {
-          title: formData.title,
-          owner: user.id,
-          members: formData.members,
-          items: formData.items,
-          archived: false
-        };
-      
-        const response = await fetch('http://127.0.0.1:8000/shoppingList/create', {
-          method: "POST",
-          headers: {
-          "Content-Type": "application/json",
-        },
-          body: JSON.stringify(newList),
-        });
-      
-        if (response.ok) {
-          setShow(false);
-        } else {
-          const errorData = await response.json();
-          setListCall({ state: "error", error: errorData });
-        };
-  
-        } catch (error) {
-          setListCall({ state: "error", error: error.message });
-        } finally {
-        }
-    };
 
   const setField = (name, val) => {
     setFormData((formData) => {
@@ -167,6 +114,39 @@ export default function ShoppingList ({ handleShowModal }) {
       ...prevFormData,
       members: [...prevFormData.members, newMember.id]
     }))
+  };
+
+  const handleCreateList = () => {
+    setTitleError(null);
+    setItemsError(null);
+
+    if (formData.title.length < 3 || formData.title.length > 50) {
+      setTitleError(t("The title must be 3 - 50 characters long."));
+    return;
+    };
+
+    const itemErrors = validateItems();
+
+    if (itemErrors.length > 0) {
+      setItemsError(itemErrors);
+    return;
+    };
+
+    if (formData.items.length === 0) {
+      setShowAlert(true);
+    return;
+    };
+
+    const newList = {
+      title: formData.title,
+      owner: user.id,
+      members: formData.members,
+      items: formData.items,
+      archived: false
+    };
+    
+    createList(newList);
+    setShow(false);
   };
 
 return (

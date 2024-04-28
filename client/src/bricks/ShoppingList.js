@@ -9,11 +9,13 @@ import styles from "../styles/styles.css";
 import AddItem from "./AddItem";
 import ShoppingListDel from "./ShoppingListDel";
 import UserContext from "../UserProvider";
+import { useList } from "../ListProvider"
 
 export default function ShoppingList ({ detail, lists, ownerName, members }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const {user, users, canEdit, darkMode} = useContext(UserContext);
+  const { updateList } = useList();
   const [listCall, setListCall] = useState({ state: "pending" });
   const [showAlert, setShowAlert] = useState(false);
   const [isModalShown, setShow] = useState(false);
@@ -57,11 +59,7 @@ export default function ShoppingList ({ detail, lists, ownerName, members }) {
     return errors;
   };
 
-  const handleEditList = async (e) => {
-
-    try {
-      e.preventDefault();
-      e.stopPropagation();
+  const handleEditList = () => {
         
       setTitleError(null);
       setItemsError(null);
@@ -90,25 +88,9 @@ export default function ShoppingList ({ detail, lists, ownerName, members }) {
       items: formData.items,
       archived: formData.archived
     };
-          
-    const response = await fetch("http://127.0.0.1:8000/shoppingList/update", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updatedList),
-    });
-      
-    if (response.ok) {
-      navigate(`/overview`);
-    } else {
-      const errorData = await response.json();
-      setListCall({ state: "error", error: errorData });
-    }
-    } catch (error) {
-      setListCall({ state: "error", error: error.message });
-    } finally {
-    }
+
+    updateList(updatedList);
+    navigate(`/overview`);
   };
 
   const setField = (name, val) => {
@@ -192,6 +174,7 @@ export default function ShoppingList ({ detail, lists, ownerName, members }) {
     setFormData(updatedFormData);
     handleEditList();
   };
+
 
 return (
   <>

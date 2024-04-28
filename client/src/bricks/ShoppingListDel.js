@@ -2,13 +2,15 @@ import React, { useState, useEffect, useContext } from "react";
 import { Modal, Button, Alert } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from "react-router-dom";
+import { useList } from "../ListProvider"
 import UserContext from "../UserProvider";
 
 import styles from "../styles/styles.css";
 
-export default function ShoppingListDel ({ detail, archiving, onClose, isDeleteModalShown }) {
+export default function ShoppingListDel ({ detail, archiving, onClose, isDeleteModalShown, onDeleteSuccess }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { deleteList } = useList();
   const {user, darkMode} = useContext(UserContext);
   const [showAlert, setShowAlert] = useState(false);
   const [isModalShown, setShow] = useState(false);
@@ -24,46 +26,18 @@ export default function ShoppingListDel ({ detail, archiving, onClose, isDeleteM
     onClose();
   };
 
-const handleDelete = async () => {
-  try {
-    const requestData = {
-      id: detail.id,
-      userId: user.id
-    };
+const handleDelete = () => {
+  const requestData = {
+    id: detail.id,
+    userId: user.id
+  };
 
-    const response = await fetch("http://127.0.0.1:8000/shoppingList/delete", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestData),
-    });
-
-    if (response.ok) {
-      console.log("List deleted successfully.");
-    } else {
-      const errorData = await response.json();
-      console.error("Error deleting list.:", errorData);
-    }
-  } catch (error) {
-    console.error("Error deleting list:", error);
-  } finally {
-    setShow(false);
-    onClose();
-    navigate(`/overview`);  
-  }
-};
-
-const handleConfirmDelete = async () => {
-  try {
-    await handleDelete();
-  } catch (error) {
-    console.error("Error deleting recipe:", error);
-  } finally {
-    // Close the delete confirmation modal
-    setShow(false);
-    onClose();
-  }
+  deleteList(requestData, () => {
+      onDeleteSuccess();
+    });    
+  setShow(false);
+  onClose();
+  navigate(`/overview`);  
 };
 
 return (
@@ -139,7 +113,7 @@ return (
             <Button 
               variant="danger"
               style={{marginLeft: "5px"}}
-              onClick={handleConfirmDelete} 
+              onClick={handleDelete} 
             >
               {t("Delete")}
             </Button>

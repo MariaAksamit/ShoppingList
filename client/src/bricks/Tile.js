@@ -9,7 +9,7 @@ import styles from "../styles/styles.css";
 import ShoppingListDel from "./ShoppingListDel";
 import UserContext from "../UserProvider";
 
-function Tile ({ detail, lists }) {
+function Tile ({ detail, lists, onDeleteSuccess }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { users, canEdit, darkMode} = useContext(UserContext);
@@ -32,6 +32,10 @@ function Tile ({ detail, lists }) {
       }
     });
   };
+ 
+  const handleDeleteSuccess = () => {
+    onDeleteSuccess();
+  }; 
 
 return (
   <Card className={`listCard ${darkMode ? 'dark-mode' : ''}`}>
@@ -80,6 +84,7 @@ return (
                 archiving={archiving}
                 onClose={() => setDeleteModalShown(false)}
                 isDeleteModalShown={isDeleteModalShown}
+                onDeleteSuccess={handleDeleteSuccess}
             />
             <Icon
                 path={mdiTrashCanOutline}

@@ -1,22 +1,52 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
+import { useTranslation } from 'react-i18next';
 import UserContext from "../UserProvider";
+import { useList } from "../ListProvider"
+import Icon from "@mdi/react";
+import { mdiLoading } from "@mdi/js";
 import Overview from "../bricks/Overview"
 
 function OverviewR() {
-  const {darkMode} = useContext(UserContext);
-  const [lists, setLists] = useState([]);
+  const { t } = useTranslation();
+  const { darkMode } = useContext(UserContext);
+  const { status, lists, fetchList } = useList();
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/shoppingList/list')
-       .then(response => response.json())
-       .then(data => setLists(data))
-       .catch(error => console.error('Error fetching data:', error));
+    fetchList(); 
+  }, []); 
 
- }, []); 
+  const updateList = () => {
+    fetchList(); 
+  }
 
-  return (
+  function getChild() {
+    switch (status.state) {
+      case "pending":
+        return (
+          <div className="loading">
+            <Icon size={10} path={mdiLoading} spin={true}/>
+          </div>
+        );
+      case "success":
+        return (
+          <>
+            <Overview lists={lists} onDeleteSuccess={updateList}/>
+          </>
+        );
+      case "error":
+        return (
+          <div>
+            <div>{t("Failed to load list data.")}</div>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
+
+ return (
     <div className={darkMode ? "blackBgr" : ""}>
-      <Overview lists={lists}/>
+      {getChild()}
     </div>
   );
 };
