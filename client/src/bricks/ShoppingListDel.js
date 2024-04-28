@@ -108,7 +108,7 @@ return (
               }} 
                 variant="outline-danger"
             >
-             {t("Cancel")}
+             Cancel
             </Button>
             <Button 
               variant="danger"

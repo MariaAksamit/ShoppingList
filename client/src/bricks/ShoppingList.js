@@ -1,13 +1,14 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from "react-router-dom"
-import { Alert, Button, Table, Row, Col, Form, Accordion, Dropdown, DropdownButton } from "react-bootstrap";
+import { Button, Table, Row, Col, Form, Accordion, Dropdown, DropdownButton } from "react-bootstrap";
 import Icon from "@mdi/react";
 import { mdiTrashCanOutline } from "@mdi/js";
 
 import styles from "../styles/styles.css";
 import AddItem from "./AddItem";
 import ShoppingListDel from "./ShoppingListDel";
+import AlertWin from "./AlertWin";
 import UserContext from "../UserProvider";
 import { useList } from "../ListProvider"
 
@@ -391,25 +392,17 @@ return (
       />
     )}
   </div>
+  <br />
   </div>
-  <Alert
-    className="warning"
-    show={showAlert}
-    variant="warning" 
-    onClose={() => setShowAlert(false)}
-    dismissible
-  >
-    <p> {t("The list contains no items. Add at least one.")} </p>
-    <hr />
-    <div className="d-flex justify-content-end">
-      <Button 
-        onClick={() => setShowAlert(false)}
-        variant="outline-danger"
-      >
-        Cancel
-      </Button>
-    </div>
-  </Alert>
+  <div className="warning">
+  <AlertWin
+    showAlert={showAlert}
+	  onClose={() => setShowAlert(false)}
+    varianta={"warning"}
+    text={t("The list contains no items. Add at least one.")}
+  />
+  </div>
+
   </>
 );
 };

@@ -8,6 +8,7 @@ import { useList } from "../ListProvider"
 
 import styles from "../styles/styles.css";
 import AddItem from "./AddItem";
+import AlertWin from "./AlertWin";
 
 export default function ShoppingListCreate ({ handleShowModal, onCreateSuccess }) {
   const { t } = useTranslation();
@@ -317,25 +318,12 @@ return (
     </Button>
   </Modal.Footer>  
   
-  <Alert
-    show={showAlert}
-    variant="warning" 
-    onClose={() => setShowAlert(false)}
-    dismissible
-  >
-    <p> {t("The list contains no items. Add at least one.")} </p>
-    <hr />
-    <div className="d-flex justify-content-end">
-      <Button 
-        onClick={() => {
-        setShowAlert(false);
-        }} 
-        variant="outline-danger"
-      >
-        {t("Cancel")}
-      </Button>
-    </div>
-  </Alert> 
+  <AlertWin
+    showAlert={showAlert}
+	  onClose={() => setShowAlert(false)}
+    varianta={"warning"}
+    text={t("The list contains no items. Add at least one.")}
+  />
   </div>
 </Modal>
   </>
