@@ -33,7 +33,7 @@ export function ListProvider({ children })  {
        });
   };
 
-  const createList = async (newList) => {
+  const createList = async (newList, callback) => {
     try {
       setStatus({ state: "pending" })
       const response = await fetch('http://127.0.0.1:8000/shoppingList/create', {
@@ -45,6 +45,9 @@ export function ListProvider({ children })  {
       });
       if (response.ok) {
         setStatus({ state: "success" });
+        if (typeof callback === 'function') {
+          callback();
+        }
       } else {
         const errorData = await response.json();
         setStatus({ state: "error", error: errorData });
@@ -57,7 +60,7 @@ export function ListProvider({ children })  {
       }   
   };
 
-  const updateList = async (updatedList) => {
+  const updateList = async (updatedList, callback) => {
     try {
       setStatus({ state: "pending" })
       const response = await fetch("http://127.0.0.1:8000/shoppingList/update", {
@@ -69,6 +72,9 @@ export function ListProvider({ children })  {
       });
       if (response.ok) {
         setStatus({ state: "success" });
+        if (typeof callback === 'function') {
+          callback();
+        }
       } else {
         const errorData = await response.json();
         setStatus({ state: "error", error: errorData });

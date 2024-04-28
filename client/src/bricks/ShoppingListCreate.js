@@ -9,7 +9,7 @@ import { useList } from "../ListProvider"
 import styles from "../styles/styles.css";
 import AddItem from "./AddItem";
 
-export default function ShoppingList ({ handleShowModal }) {
+export default function ShoppingListCreate ({ handleShowModal, onCreateSuccess }) {
   const { t } = useTranslation();
   const {user, users, darkMode } = useContext(UserContext);
   const { createList } = useList();
@@ -145,7 +145,9 @@ export default function ShoppingList ({ handleShowModal }) {
       archived: false
     };
     
-    createList(newList);
+    createList(newList, () => {
+      onCreateSuccess();
+    });
     setShow(false);
   };
 

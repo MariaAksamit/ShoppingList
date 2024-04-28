@@ -9,7 +9,7 @@ import UserContext from "../UserProvider";
 import Tile from "./Tile";
 import ShoppingListCreate from "./ShoppingListCreate";
 
-export default function Overview ({ lists, onDeleteSuccess }) {
+export default function Overview ({ lists, onLoadSuccess }) {
   const { t } = useTranslation();
   const [isModalShown, setShow] = useState(false);
   const {user, users, isLoggedIn, darkMode} = useContext(UserContext);
@@ -48,8 +48,8 @@ export default function Overview ({ lists, onDeleteSuccess }) {
     setshowActiveLists((prevshowActiveLists) => !prevshowActiveLists);
   };
 
-   const handleDeleteSuccess = () => {
-    onDeleteSuccess();
+   const handleLoadSuccess = () => {
+    onLoadSuccess();
   }; 
 
 return (
@@ -84,7 +84,7 @@ return (
               >
                 {showActiveLists ? t("All Lists") : t("Active Lists")}
               </Button>
-              <ShoppingListCreate handleShowModal={handleOpenModal}/>            
+              <ShoppingListCreate handleShowModal={handleOpenModal} onCreateSuccess={handleLoadSuccess}/>            
             </Navbar.Collapse> 
         </div>
     </Navbar>
@@ -101,7 +101,7 @@ return (
                 className={`col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3 ${darkMode ? 'dark-mode' : 'light-mode'}`}            
                 style={{ paddingBottom: "16px"}}
               >
-                <Tile detail={list} users={users} lists={lists} onDeleteSuccess={handleDeleteSuccess} />
+                <Tile detail={list} users={users} lists={lists} onLoadSuccess={handleLoadSuccess} />
               </div>
             );
           }

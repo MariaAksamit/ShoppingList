@@ -9,7 +9,7 @@ import styles from "../styles/styles.css";
 import ShoppingListDel from "./ShoppingListDel";
 import UserContext from "../UserProvider";
 
-function Tile ({ detail, lists, onDeleteSuccess }) {
+function Tile ({ detail, lists, onLoadSuccess }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { users, canEdit, darkMode} = useContext(UserContext);
@@ -20,7 +20,7 @@ function Tile ({ detail, lists, onDeleteSuccess }) {
     .map(user => user.name);
 
   const handleTileClick = () => {
-    navigate(`/shoppingList/${detail.id}`, {state: {lists, detail, ownerName, members}});
+    navigate(`/shoppingList/${detail.id}`, {state: {detail, ownerName, members}});
   };
 
   const archiving =  (archived) => {
@@ -33,8 +33,8 @@ function Tile ({ detail, lists, onDeleteSuccess }) {
     });
   };
  
-  const handleDeleteSuccess = () => {
-    onDeleteSuccess();
+  const handleLoadSuccess = () => {
+    onLoadSuccess();
   }; 
 
 return (
@@ -84,7 +84,7 @@ return (
                 archiving={archiving}
                 onClose={() => setDeleteModalShown(false)}
                 isDeleteModalShown={isDeleteModalShown}
-                onDeleteSuccess={handleDeleteSuccess}
+                onLoadSuccess={handleLoadSuccess}
             />
             <Icon
                 path={mdiTrashCanOutline}

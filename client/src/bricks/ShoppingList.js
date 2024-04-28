@@ -11,12 +11,11 @@ import ShoppingListDel from "./ShoppingListDel";
 import UserContext from "../UserProvider";
 import { useList } from "../ListProvider"
 
-export default function ShoppingList ({ detail, lists, ownerName, members }) {
+export default function ShoppingList ({ detail, ownerName, members, onUpdateSuccess }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const {user, users, canEdit, darkMode} = useContext(UserContext);
   const { updateList } = useList();
-  const [listCall, setListCall] = useState({ state: "pending" });
   const [showAlert, setShowAlert] = useState(false);
   const [isModalShown, setShow] = useState(false);
   const [titleError, setTitleError] = useState(null);
@@ -89,7 +88,9 @@ export default function ShoppingList ({ detail, lists, ownerName, members }) {
       archived: formData.archived
     };
 
-    updateList(updatedList);
+    updateList(updatedList, () => {
+      onUpdateSuccess();
+    });
     navigate(`/overview`);
   };
 

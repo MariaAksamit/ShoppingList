@@ -30,7 +30,7 @@ function OverviewR() {
       case "success":
         return (
           <>
-            <Overview lists={lists} onDeleteSuccess={updateList}/>
+            <Overview lists={lists} onLoadSuccess={updateList}/>
           </>
         );
       case "error":
