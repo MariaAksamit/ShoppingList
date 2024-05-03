@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Outlet } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from "react-bootstrap/Navbar";
@@ -8,18 +8,24 @@ import { NavDropdown, Button } from "react-bootstrap";
 import Container from "react-bootstrap/Container";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import Icon from '@mdi/react' 
-import { mdiWhiteBalanceSunny, mdiMoonWaningCrescent } from '@mdi/js';
+import { mdiWhiteBalanceSunny, mdiMoonWaningCrescent, mdiAlphaSCircleOutline, mdiAlphaMCircleOutline } from '@mdi/js';
 import { useTranslation } from "react-i18next";
 import UserContext from "./UserProvider";
+import call from "./mock/call"
 import i18n from "./i18n";
 import styles from "./styles/styles.css";
 
 function App() {
   const {user, users, changeUser, darkMode, toggleDarkMode} = useContext(UserContext);
   const { t, i18n } = useTranslation();
+  const [useMock, setUseMock] = useState(false);
 
   function lngChange(language) {
     i18n.changeLanguage(language);
+  };
+
+  function toggleUseMock() {
+    setUseMock(!useMock);
   };
 
   return (
@@ -82,6 +88,13 @@ function App() {
                 >
                   Log out
                 </Button>
+                <Icon 
+                  path={useMock ? mdiAlphaSCircleOutline : mdiAlphaMCircleOutline}
+                  style={{ cursor: 'pointer', marginLeft: "10px" }}
+                  size={1} 
+                  color={"white"}
+                  onClick={toggleUseMock}
+                />  
               </Nav>
             </Offcanvas.Body>
           </Navbar.Offcanvas>

@@ -8,11 +8,13 @@ import { mdiTrashCanOutline } from "@mdi/js";
 import styles from "../styles/styles.css";
 import ShoppingListDel from "./ShoppingListDel";
 import UserContext from "../UserProvider";
+import { useList } from "../ListProvider"
 
 function Tile ({ detail, lists, onLoadSuccess }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { users, canEdit, darkMode} = useContext(UserContext);
+  const { updateList } = useList();
   const [isDeleteModalShown, setDeleteModalShown] = useState(false);
   const ownerName = users.find((user) => user.id === detail.owner);
   const members = users
@@ -24,13 +26,18 @@ function Tile ({ detail, lists, onLoadSuccess }) {
   };
 
   const archiving =  (archived) => {
-    const updatedLists = lists.map(list => {
-      if (list.id === archived.id) {
-        return archived;
-      } else {
-        return list;
-      }
+    const updatedList = {
+      id: detail.id,
+      title: detail.title,
+      owner: detail.owner,
+      members: detail.members,
+      items: detail.items,
+      archived: archived
+    };
+      updateList(updatedList, () => {
+      onLoadSuccess();
     });
+    navigate(`/overview`);
   };
  
   const handleLoadSuccess = () => {
@@ -84,7 +91,7 @@ return (
                 archiving={archiving}
                 onClose={() => setDeleteModalShown(false)}
                 isDeleteModalShown={isDeleteModalShown}
-                onLoadSuccess={handleLoadSuccess}
+                onDeleteSuccess={handleLoadSuccess}
             />
             <Icon
                 path={mdiTrashCanOutline}

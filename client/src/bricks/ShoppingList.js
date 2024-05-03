@@ -154,10 +154,25 @@ export default function ShoppingList ({ detail, ownerName, members, onUpdateSucc
   : formData.items.filter((item) => !item.state);
 
   const deleteMember = (memberId) => {
-    setFormData(formData => ({
-      ...formData,
+    if (user.id === detail.owner) {
+      setFormData(formData => ({
+        ...formData,
+        members: formData.members.filter(member => member !== memberId),
+      }));
+    } else {
+    const updatedList = {
+      id: detail.id,
+      title: formData.title,
+      owner: detail.owner,
       members: formData.members.filter(member => member !== memberId),
-    }));
+      items: formData.items,
+      archived: formData.archived
+    };
+      updateList(updatedList, () => {
+      onUpdateSuccess();
+    });
+    navigate(`/overview`);
+  };
   };
 
   const addMember = (newMemberId) => {
@@ -171,12 +186,20 @@ export default function ShoppingList ({ detail, ownerName, members, onUpdateSucc
     navigate(`/overview`);
   };
 
-  const archiving =  (archived) => {
-    const updatedFormData = archived;
-    setFormData(updatedFormData);
-    handleEditList();
+  const archiving =  (archived) => {  
+    const updatedList = {
+      id: detail.id,
+      title: formData.title,
+      owner: detail.owner,
+      members: formData.members,
+      items: formData.items,
+      archived: archived
+    };
+      updateList(updatedList, () => {
+      onUpdateSuccess();
+    });
+    navigate(`/overview`);  
   };
-
 
 return (
   <>
@@ -269,6 +292,8 @@ return (
                 <Button
                   variant="outline-danger"
                   onClick={() => {deleteMember(user.id)}}
+
+
                 >
                   {t("Leave")}
                 </Button>
@@ -375,6 +400,7 @@ return (
         archiving={archiving}
         onClose={() => setDeleteModalShown(false)}
         isDeleteModalShown={isDeleteModalShown}
+        onDeleteSuccess={onUpdateSuccess}
       />
       <Button 
         variant={darkMode ? "outline-secondary" : "secondary"}

@@ -59,7 +59,7 @@ return (
         variant={darkMode ? "outline-primary" : "primary"}
         style={{ marginLeft: "8px" }}
         onClick={() => {
-            archiving({ ...detail, archived: true });
+            archiving(true);
             handleCloseModal(); 
         }}
         >
@@ -70,7 +70,7 @@ return (
         variant={darkMode ? "outline-primary" : "primary"}
         style={{ marginLeft: "8px" }}
         onClick={() => {
-            archiving({ ...detail, archived: false });
+            archiving(false);
             handleCloseModal(); 
         }}
         >

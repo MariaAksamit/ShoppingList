@@ -1,9 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import Icon from "@mdi/react";
-import { mdiLoading } from "@mdi/js";
-
 const ListContext = createContext();
 
 export function ListProvider({ children })  {
@@ -14,28 +11,25 @@ export function ListProvider({ children })  {
     state: "pending",
   });
 
-  const fetchList = () => {
-    setStatus({ state: "pending" })
-    fetch('http://127.0.0.1:8000/shoppingList/list')
-       .then(response => {
-          if (!response.ok) {
-            throw new Error(t('Error loading data'));
-          }
-          return response.json();
-       })
-       .then(data => {
-          setLists(data);
-          setStatus({ state: "success" });
-       })
-       .catch(error => {
-          console.error(t('Error loading data:'), error);
-          setStatus({ state: "error", error });
-       });
+  const fetchList = async () => {
+    setStatus({ state: "pending" });
+    try {
+      const response = await fetch('http://127.0.0.1:8000/shoppingList/list');
+      if (!response.ok) {
+        throw new Error(t('Error loading data'));
+      }
+      const data = await response.json();
+      setLists(data);
+      setStatus({ state: "success" });
+    } catch (error) {
+      console.error(t('Error loading data:'), error);
+      setStatus({ state: "error", error });
+    }
   };
 
   const createList = async (newList, callback) => {
     try {
-      setStatus({ state: "pending" })
+      setStatus({ state: "pending" });
       const response = await fetch('http://127.0.0.1:8000/shoppingList/create', {
         method: "POST",
         headers: {
@@ -51,18 +45,16 @@ export function ListProvider({ children })  {
       } else {
         const errorData = await response.json();
         setStatus({ state: "error", error: errorData });
-      };
-
-      } catch (error) {
-        setStatus({ state: "error", error: error.message });
-        console.error('Error creating list:', error);
-      } finally {
-      }   
+      }
+    } catch (error) {
+      setStatus({ state: "error", error: error.message });
+      console.error('Error creating list:', error);
+    }
   };
 
   const updateList = async (updatedList, callback) => {
     try {
-      setStatus({ state: "pending" })
+      setStatus({ state: "pending" });
       const response = await fetch("http://127.0.0.1:8000/shoppingList/update", {
         method: "POST",
         headers: {
@@ -79,15 +71,14 @@ export function ListProvider({ children })  {
         const errorData = await response.json();
         setStatus({ state: "error", error: errorData });
       }
-      } catch (error) {
-        setStatus({ state: "error", error: error.message });
-      } finally {
-      }
+    } catch (error) {
+      setStatus({ state: "error", error: error.message });
+    }
   };
 
   const deleteList = async (requestData, callback ) => {
-    setStatus({ state: "pending" })
     try {
+      setStatus({ state: "pending" });
       const response = await fetch('http://127.0.0.1:8000/shoppingList/delete', {
         method: "POST",
         headers: {
@@ -98,7 +89,7 @@ export function ListProvider({ children })  {
       if (response.ok) {
         setStatus({ state: "success" });
         console.log("List deleted successfully.");
-      if (typeof callback === 'function') {
+        if (typeof callback === 'function') {
           callback();
         }
       } else {
@@ -109,8 +100,6 @@ export function ListProvider({ children })  {
     } catch (error) {
       setStatus({ state: "error", error: error.message });
       console.error("Error deleting list:", error);
-    } finally {
-
     }
   };
 
@@ -119,7 +108,6 @@ export function ListProvider({ children })  {
       status,
       lists,
       fetchList,
-      setStatus,
       createList,
       updateList,
       deleteList
