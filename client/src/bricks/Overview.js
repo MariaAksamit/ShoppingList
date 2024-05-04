@@ -53,10 +53,9 @@ export default function Overview ({ lists, onLoadSuccess }) {
     onLoadSuccess();
   }; 
 
+// GRAF
+const userShoppingLists = isLoggedIn ? lists.filter(list => (list.owner === user.id || list.members.includes(user.id)) && list.archived === false) : [];
 
-// Filtrácia nákupných zoznamov prihláseného používateľa
-const userShoppingLists = isLoggedIn ? lists.filter(list => list.owner === user.id || list.members.includes(user.id)) : [];
-// Vytvorenie dát pre graf z nákupných zoznamov prihláseného používateľa
 const data = useMemo(() => {
   return userShoppingLists.map((list) => {
     const resolvedItemsCount = list.items.filter(item => item.state).length;

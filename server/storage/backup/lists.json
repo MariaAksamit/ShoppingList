@@ -8,17 +8,17 @@
       {
         "item": "Mlieko",
         "amount": "2 litre",
-        "state": false
+        "state": true
       },
       {
         "item": "Chlieb",
         "amount": "1 ks",
-        "state": false
+        "state": true
       },
       {
         "item": "Jablká",
         "amount": "0,5 kg",
-        "state": false
+        "state": true
       }
     ],
     "archived": true
@@ -32,7 +32,7 @@
       {
         "item": "Káva",
         "amount": "500 g",
-        "state": false
+        "state": true
       },
       {
         "item": "Čaj",
@@ -42,7 +42,7 @@
       {
         "item": "Papierové utierky",
         "amount": "1 balenie",
-        "state": false
+        "state": true
       },
       {
         "item": "Vodka",
@@ -52,7 +52,7 @@
       {
         "item": "Stoličky",
         "amount": "20 ks",
-        "state": false
+        "state": true
       }
     ],
     "archived": false
@@ -76,12 +76,12 @@
       {
         "item": "Vianočné cukrovinky",
         "amount": "1 balenie",
-        "state": false
+        "state": true
       },
       {
         "item": "Moriak",
         "amount": "1 ks",
-        "state": false
+        "state": true
       },
       {
         "item": "Svetelná reťaz",
@@ -100,27 +100,27 @@
       {
         "item": "Kuracie stehná",
         "amount": "1 kg",
-        "state": false
+        "state": true
       },
       {
         "item": "Zemiaky",
         "amount": "2 kg",
-        "state": false
+        "state": true
       },
       {
         "item": "Paprika",
         "amount": "500 g",
-        "state": false
+        "state": true
       },
       {
         "item": "Víno",
         "amount": "1 fľaša",
-        "state": false
+        "state": true
       },
       {
         "item": "Antrax",
         "amount": "10 g",
-        "state": false
+        "state": true
       }
     ],
     "archived": true
@@ -139,7 +139,7 @@
       {
         "item": "Sanytol",
         "amount": "2 ks",
-        "state": false
+        "state": true
       },
       {
         "item": "Handra",
@@ -152,7 +152,7 @@
         "state": false
       }
     ],
-    "archived": true
+    "archived": false
   },
   {
     "id": "bb3c212f",
@@ -183,7 +183,7 @@
       {
         "item": "Bagety",
         "amount": "10 ks",
-        "state": false
+        "state": true
       },
       {
         "item": "Syr",
@@ -207,12 +207,12 @@
       {
         "item": "Balené darčeky",
         "amount": "rôzne",
-        "state": false
+        "state": true
       },
       {
         "item": "Dekorácie",
         "amount": "rôzne",
-        "state": false
+        "state": true
       }
     ],
     "archived": false
@@ -236,7 +236,7 @@
       {
         "item": "Nápoje",
         "amount": "rôzne",
-        "state": false
+        "state": true
       }
     ],
     "archived": false
@@ -250,17 +250,17 @@
       {
         "item": "Párky",
         "amount": "2 balenia",
-        "state": false
+        "state": true
       },
       {
         "item": "Hamburgerové mäso",
         "amount": "2 kg",
-        "state": false
+        "state": true
       },
       {
         "item": "Šaláty",
         "amount": "2 ks",
-        "state": false
+        "state": true
       }
     ],
     "archived": true
@@ -303,12 +303,12 @@
       {
         "item": "Voda",
         "amount": "1 l",
-        "state": false
+        "state": true
       },
       {
         "item": "Ovocie",
         "amount": "rôzne",
-        "state": false
+        "state": true
       }
     ],
     "archived": false
@@ -332,15 +332,15 @@
       {
         "item": "Laso",
         "amount": "7 ks",
-        "state": false
+        "state": true
       },
       {
         "item": "Stelé",
         "amount": "30 ks",
-        "state": false
+        "state": true
       }
     ],
-    "archived": true
+    "archived": false
   },
   {
     "id": "aec671e2",
@@ -375,17 +375,17 @@
       {
         "item": "Šampanské",
         "amount": "2 fľaše",
-        "state": false
+        "state": true
       },
       {
         "item": "Saláma",
         "amount": "500 g",
-        "state": false
+        "state": true
       },
       {
         "item": "Olivy",
         "amount": "200 g",
-        "state": false
+        "state": true
       }
     ],
     "archived": true
@@ -409,7 +409,7 @@
       {
         "item": "Nápoje",
         "amount": "rôzne",
-        "state": false
+        "state": true
       },
       {
         "item": "Prstene",
