@@ -3,7 +3,7 @@ import { Button, Form, Navbar } from "react-bootstrap";
 import { useTranslation } from 'react-i18next';
 import Icon from "@mdi/react";
 import { mdiMagnify } from "@mdi/js";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 import styles from "../styles/styles.css";
 import UserContext from "../UserProvider";
@@ -52,23 +52,22 @@ export default function Overview ({ lists, onLoadSuccess }) {
    const handleLoadSuccess = () => {
     onLoadSuccess();
   }; 
-
-
+  
 // Filtrácia nákupných zoznamov prihláseného používateľa
-const userShoppingLists = isLoggedIn ? lists.filter(list => list.owner === user.id || list.members.includes(user.id)) : [];
+const userShoppingLists = lists.filter(list => list.owner === user.id || list.members.includes(user.id));
+
 // Vytvorenie dát pre graf z nákupných zoznamov prihláseného používateľa
 const data = useMemo(() => {
   return userShoppingLists.map((list) => {
-    const resolvedItemsCount = list.items.filter(item => item.state).length;
-    const unresolvedItemsCount = list.items.filter(item => !item.state).length;
+    const completedItemsCount = list.items.filter(item => item.state).length;
+    const incompleteItemsCount = list.items.filter(item => !item.state).length;
     return {
       name: list.title,
-      resolved: resolvedItemsCount,
-      unresolved: unresolvedItemsCount,
+      completed: completedItemsCount,
+      incomplete: incompleteItemsCount,
     };
   });
-}, [userShoppingLists]); 
-
+}, [userShoppingLists]);
 
 return (
 
@@ -107,32 +106,27 @@ return (
         </div>
     </Navbar>
     }
-    <br />
-{isLoggedIn &&
-<div className="chart">
-    <ResponsiveContainer width="75%" height={250}>
-      <BarChart
-        data={data}
-        margin={{
-         top: 20,
-         right: 30,
-         left: 20,
-         bottom: 5,
-        }}
-      >
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="name" />
-      <YAxis />
-      <Tooltip />
-      <Legend />
-      <Bar dataKey="resolved" stackId="a" fill="#82ca9d" name="Resolved" />
-      <Bar dataKey="unresolved" stackId="a" fill="#8884d8" name="Unresolved" />
-      </BarChart>
-    </ResponsiveContainer>
-    </div>
-}
 
-<br />
+<ResponsiveContainer width="100%" height={300}>
+        <BarChart
+          data={data}
+          margin={{
+            top: 20,
+            right: 30,
+            left: 20,
+            bottom: 5,
+          }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="resolved" stackId="a" fill="#82ca9d" name="Completed" />
+          <Bar dataKey="unresolved" stackId="a" fill="#8884d8" name="Incomplete" />
+        </BarChart>
+      </ResponsiveContainer>
+
 <div className={`overview ${darkMode ? 'dark-mode' : ''}`}>
   {isLoggedIn && lists.length ? (   
     <div className="container">

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom"
 import { Button, Table, Row, Col, Form, Accordion, Dropdown, DropdownButton } from "react-bootstrap";
 import Icon from "@mdi/react";
 import { mdiTrashCanOutline } from "@mdi/js";
+import { PieChart, Pie, Cell } from 'recharts';
 
 import styles from "../styles/styles.css";
 import AddItem from "./AddItem";
@@ -201,6 +202,18 @@ export default function ShoppingList ({ detail, ownerName, members, onUpdateSucc
     navigate(`/overview`);  
   };
 
+
+// GRAF
+const completedItemsCount = formData.items.filter(item => item.state).length;
+const incompleteItemsCount = formData.items.filter(item => !item.state).length;
+
+const data = [
+  { name: 'Resolved', value: completedItemsCount },
+  { name: 'Unresolved', value: incompleteItemsCount },
+];
+
+const COLORS = ['#0088FE', '#00C49F'];
+
 return (
   <>
 
@@ -379,6 +392,27 @@ return (
     </Table>
       </div>
   </Form>
+    <br />
+
+  <div className="chart" >
+    <PieChart width={250} height={350}>
+      <Pie
+        data={data}
+        cx={120}
+        cy={150}
+        innerRadius={80}
+        outerRadius={100}
+        fill="#8884d8"
+        paddingAngle={5}
+        dataKey="value"
+      >
+        {data.map((entry, index) => (
+          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+        ))}
+      </Pie>
+    </PieChart>
+</div>
+
     <br />
     <div className="formDetailButton">
       <Button 

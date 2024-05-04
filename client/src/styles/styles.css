@@ -140,3 +140,8 @@ body.light-mode {
   align-items: center;
   color: rgb(70, 12, 70);;
 }
+
+.chart {
+  display: flex;
+  justify-content: center;
+}

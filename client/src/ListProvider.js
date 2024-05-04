@@ -11,6 +11,30 @@ export function ListProvider({ children })  {
     state: "pending",
   });
 
+  const serverCall = async (url, requestData, method, errorCallback) => {
+    try {
+      setStatus({ state: "pending" });
+      const response = await fetch(url, {
+        method: method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestData),
+      });
+      if (response.ok) {
+        setStatus({ state: "success" });
+        return await response.json();
+      } else {
+        const errorData = await response.json();
+        setStatus({ state: "error", error: errorData });
+        errorCallback && errorCallback(errorData);
+      }
+    } catch (error) {
+      setStatus({ state: "error", error: error.message });
+      console.error("Error:", error);
+    }
+  };
+
   const fetchList = async () => {
     setStatus({ state: "pending" });
     try {
@@ -28,79 +52,24 @@ export function ListProvider({ children })  {
   };
 
   const createList = async (newList, callback) => {
-    try {
-      setStatus({ state: "pending" });
-      const response = await fetch('http://127.0.0.1:8000/shoppingList/create', {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newList),
-      });
-      if (response.ok) {
-        setStatus({ state: "success" });
-        if (typeof callback === 'function') {
-          callback();
-        }
-      } else {
-        const errorData = await response.json();
-        setStatus({ state: "error", error: errorData });
-      }
-    } catch (error) {
-      setStatus({ state: "error", error: error.message });
+    await serverCall('http://127.0.0.1:8000/shoppingList/create', newList, 'POST', error => {
       console.error('Error creating list:', error);
-    }
+    });
+    callback && callback();
   };
 
   const updateList = async (updatedList, callback) => {
-    try {
-      setStatus({ state: "pending" });
-      const response = await fetch("http://127.0.0.1:8000/shoppingList/update", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updatedList),
-      });
-      if (response.ok) {
-        setStatus({ state: "success" });
-        if (typeof callback === 'function') {
-          callback();
-        }
-      } else {
-        const errorData = await response.json();
-        setStatus({ state: "error", error: errorData });
-      }
-    } catch (error) {
-      setStatus({ state: "error", error: error.message });
-    }
+    await serverCall('http://127.0.0.1:8000/shoppingList/update', updatedList, 'POST', error => {
+      console.error('Error updating list:', error);
+    });
+    callback && callback();
   };
 
-  const deleteList = async (requestData, callback ) => {
-    try {
-      setStatus({ state: "pending" });
-      const response = await fetch('http://127.0.0.1:8000/shoppingList/delete', {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestData),
-      });
-      if (response.ok) {
-        setStatus({ state: "success" });
-        console.log("List deleted successfully.");
-        if (typeof callback === 'function') {
-          callback();
-        }
-      } else {
-        const errorData = await response.json();
-        setStatus({ state: "error", error: errorData });
-        console.error("Error deleting list.:", errorData);
-      }
-    } catch (error) {
-      setStatus({ state: "error", error: error.message });
-      console.error("Error deleting list:", error);
-    }
+  const deleteList = async (requestData, callback) => {
+    await serverCall('http://127.0.0.1:8000/shoppingList/delete', requestData, 'POST', error => {
+      console.error('Error deleting list:', error);
+    });
+    callback && callback();
   };
 
   return (
