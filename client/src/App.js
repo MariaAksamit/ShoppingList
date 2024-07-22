@@ -64,8 +64,8 @@ function App() {
                   id={darkMode ? "nav-dropdown-dark" : "nav-dropdown-light" }
                   menuVariant={darkMode ? "dark" : "light"}
                 >  
-                  <NavDropdown.Item onClick={() => lngChange("en")}>English     EN</NavDropdown.Item>  
-                  <NavDropdown.Item onClick={() => lngChange("sk")}>Slovenčina  SK</NavDropdown.Item>  
+                  <NavDropdown.Item onClick={() => lngChange("en")}>EN</NavDropdown.Item>  
+                  <NavDropdown.Item onClick={() => lngChange("sk")}>SK</NavDropdown.Item>  
                 </NavDropdown>
                 <span className="me-2"></span>
                 <Icon 

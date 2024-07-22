@@ -38,5 +38,7 @@
     "The title must be 3 - 50 characters long.": "Názov nákupného zoznamu musí mať 3 - 50 znakov.",
     "Title": "Názov",
     "Unregistred": "Neprihlásený",
-    "You are not authorized to view the shopping list": "Nemáte povolenie zobraziť nákupný zoznam"
+    "You are not authorized to view the shopping list": "Nemáte povolenie zobraziť nákupný zoznam",
+    "Resolved": "Vybavené",
+    "Unresolved": "Nevybavené"
 }

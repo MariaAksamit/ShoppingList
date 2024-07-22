@@ -37,5 +37,7 @@
     "Názov nákupného zoznamu": "Name of the shopping list",
     "Pridaj člena": "Add Member",
     "Nepodarilo sa načítať dáta.": "Failed to load list data.",
-    "Chyba pri načítaní dát": "Error loading data"
+    "Chyba pri načítaní dát": "Error loading data",
+    "Vybavené": "Resolved",
+    "Nevybavené": "Unresolved"
 }

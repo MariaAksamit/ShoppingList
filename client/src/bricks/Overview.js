@@ -124,8 +124,8 @@ return (
       <YAxis />
       <Tooltip />
       <Legend />
-      <Bar dataKey="resolved" stackId="a" fill="#82ca9d" name="Resolved" />
-      <Bar dataKey="unresolved" stackId="a" fill="#8884d8" name="Unresolved" />
+      <Bar dataKey="resolved" stackId="a" fill="#82ca9d" name={t("Resolved")} />
+      <Bar dataKey="unresolved" stackId="a" fill="#8884d8" name={t("Unresolved")} />
       </BarChart>
     </ResponsiveContainer>
     </div>
