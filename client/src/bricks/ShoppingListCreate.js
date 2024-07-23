@@ -1,6 +1,6 @@
 import React, {useState, useContext, useEffect} from "react";
 import { useTranslation } from 'react-i18next';
-import { Alert, Modal, Button, Table, Row, Col, Form, Accordion, Dropdown, DropdownButton } from "react-bootstrap";
+import { Modal, Button, Table, Row, Col, Form, Accordion, Dropdown, DropdownButton } from "react-bootstrap";
 import Icon from "@mdi/react";
 import { mdiPlus, mdiTrashCanOutline } from "@mdi/js";
 import UserContext from "../UserProvider";
